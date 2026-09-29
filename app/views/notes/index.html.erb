@@ -1,0 +1,23 @@
+<% content_for(:title, "Notes") %>
+
+<h1 class="mb-6 text-2xl font-bold">Notes</h1>
+
+<% if @subjects.empty? %>
+  <p class="rounded-lg border border-dashed border-slate-300 p-8 text-center text-slate-500">
+    No notes found. Drop PDF notes into
+    <code class="font-mono text-sm"><%= StudyContent.notes_root %></code>
+    (or set <code class="font-mono text-sm">STUDY_NOTES_ROOT</code>).
+  </p>
+<% else %>
+  <div class="flex flex-col gap-4">
+    <% @subjects.each do |subject| %>
+      <%= link_to note_subject_path(subject.slug),
+            class: "group flex h-24 items-center justify-between rounded-xl bg-indigo-600 px-6 text-white shadow-sm transition hover:bg-indigo-700" do %>
+        <span class="text-2xl font-semibold"><%= subject.name %></span>
+        <span class="text-sm opacity-80 group-hover:opacity-100">
+          <%= subject.chapters.size %> chapters &rarr;
+        </span>
+      <% end %>
+    <% end %>
+  </div>
+<% end %>

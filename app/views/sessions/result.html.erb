@@ -1,0 +1,60 @@
+<% content_for(:title, "Result") %>
+
+<% accuracy = @attempts.any? ? @attempts.count(&:correct).to_f / @attempts.size : 0 %>
+
+<h1 class="mb-1 text-2xl font-bold">Session result</h1>
+<p class="mb-6 text-sm text-slate-500">
+  Scored <span class="font-semibold text-slate-800"><%= @session.correct_count %>/<%= @attempts.size %></span>
+  · accuracy <%= (accuracy * 100).round %>%
+</p>
+
+<div class="mb-8 grid grid-cols-3 gap-4">
+  <div class="rounded-lg border border-slate-200 bg-white p-4">
+    <div class="text-sm text-slate-500">Correct</div>
+    <div class="text-2xl font-bold text-indigo-600"><%= @session.correct_count %></div>
+  </div>
+  <div class="rounded-lg border border-slate-200 bg-white p-4">
+    <div class="text-sm text-slate-500">Wrong / skipped</div>
+    <div class="text-2xl font-bold"><%= @attempts.size - @session.correct_count %></div>
+  </div>
+  <div class="rounded-lg border border-slate-200 bg-white p-4">
+    <div class="text-sm text-slate-500">Question mix</div>
+    <div class="text-lg font-semibold"><%= @session.difficulty_mix %></div>
+  </div>
+</div>
+
+<h2 class="mb-3 text-lg font-semibold">Review & solutions</h2>
+<div class="flex flex-col gap-4">
+  <% @attempts.each_with_index do |attempt, i| %>
+    <% q = attempt.question %>
+    <div class="rounded-lg border <%= attempt.correct ? 'border-emerald-300' : 'border-rose-300' %> bg-white p-5">
+      <div class="mb-2 flex items-center justify-between">
+        <span class="text-sm font-semibold <%= attempt.correct ? 'text-emerald-600' : 'text-rose-600' %>">
+          Q<%= i + 1 %> · <%= attempt.correct ? "Correct" : (attempt.answer.blank? ? "Skipped" : "Wrong") %>
+        </span>
+        <span class="text-xs text-slate-400"><%= q.source %></span>
+      </div>
+      <p class="mb-3 min-w-0 break-words whitespace-pre-line text-slate-800"><%= q.body %></p>
+
+      <div class="mb-3 flex flex-col gap-1 text-sm">
+        <% q.options_hash.sort.each do |letter, text| %>
+          <div class="min-w-0 break-words <%= letter == q.answer ? 'font-semibold text-emerald-700' : (letter == attempt.answer ? 'text-rose-600' : 'text-slate-600') %>">
+            <%= letter %>. <%= text %>
+            <% if letter == q.answer %> <span class="text-xs">(correct answer)</span><% end %>
+            <% if letter == attempt.answer && !attempt.correct %> <span class="text-xs">(your answer)</span><% end %>
+          </div>
+        <% end %>
+      </div>
+
+      <% if q.solution.present? %>
+        <div class="rounded-md bg-slate-50 p-3 text-sm text-slate-700">
+          <span class="font-semibold">Solution:</span> <%= q.solution %>
+        </div>
+      <% end %>
+    </div>
+  <% end %>
+</div>
+
+<%= button_to "Start another practice", quiz_sessions_path,
+      method: :post,
+      class: "mt-8 rounded-lg bg-indigo-600 px-6 py-3 font-semibold text-white hover:bg-indigo-700" %>

@@ -1,0 +1,15 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  status: MyString
+  time_limit_seconds: 1
+  submitted_at: 2026-09-29 21:35:05
+  correct_count: 1
+  difficulty_mix: MyText
+
+two:
+  status: MyString
+  time_limit_seconds: 1
+  submitted_at: 2026-09-29 21:35:05
+  correct_count: 1
+  difficulty_mix: MyText

@@ -1,0 +1,21 @@
+mathematics:
+  - title: NCERT Mathematics Textbook — Class 12
+    type: textbook
+    why: The official CBSE text. Your chapter PDFs come from here — read them first.
+    buy: https://www.amazon.in/s?k=ncert+mathematics+textbook+class+12
+  - title: RD Sharma Class 12 Mathematics
+    type: workbook
+    why: Graded problem sets, noticeably harder than board level. Good for stretch practice.
+    buy: https://www.amazon.in/s?k=rd+sharma+class+12+mathematics
+  - title: Together With Mathematics — Class 12
+    type: workbook
+    why: Chapter-wise practice with solved examples, CBSE pattern.
+    buy: https://www.amazon.in/s?k=together+with+mathematics+class+12
+  - title: Oswaal CBSE Sample Papers Mathematics — Class 12
+    type: workbook
+    why: Timed mock papers — matches how our practice sessions are structured.
+    buy: https://www.amazon.in/s?k=oswaal+sample+papers+mathematics+class+12
+  - title: MTG JEE Main Mathematics Chapterwise
+    type: workbook
+    why: One step beyond boards — for when hard questions start feeling easy.
+    buy: https://www.amazon.in/s?k=mtg+jee+main+mathematics+chapterwise

@@ -1,0 +1,23 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  subject: MyString
+  q_type: MyString
+  marks: 1
+  difficulty: MyString
+  source: MyString
+  body: MyText
+  options: MyText
+  answer: MyText
+  solution: MyText
+
+two:
+  subject: MyString
+  q_type: MyString
+  marks: 1
+  difficulty: MyString
+  source: MyString
+  body: MyText
+  options: MyText
+  answer: MyText
+  solution: MyText

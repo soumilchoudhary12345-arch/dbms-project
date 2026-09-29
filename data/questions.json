@@ -1,0 +1,402 @@
+[
+  {
+    "body": "If f(x) = 2x + 3 is a function from R to R, then f^(-1)(x) is:",
+    "options": {"A": "(x - 3)/2", "B": "(x + 3)/2", "C": "2x - 3", "D": "3 - 2x"},
+    "answer": "A",
+    "difficulty": "easy",
+    "topic": "relations/functions",
+    "solution": "Let y = 2x + 3. Then x = (y - 3)/2, so f^(-1)(x) = (x - 3)/2."
+  },
+  {
+    "body": "The relation R = {(1,1), (2,2), (3,3)} on the set {1, 2, 3} is:",
+    "options": {"A": "Reflexive only", "B": "Symmetric only", "C": "An equivalence relation", "D": "Neither reflexive nor symmetric"},
+    "answer": "C",
+    "difficulty": "easy",
+    "topic": "relations/functions",
+    "solution": "It contains every (a,a), so it is reflexive. It is trivially symmetric and transitive, so it is an equivalence relation."
+  },
+  {
+    "body": "The number of one-one functions from a set with 2 elements to a set with 3 elements is:",
+    "options": {"A": "3", "B": "6", "C": "8", "D": "9"},
+    "answer": "B",
+    "difficulty": "easy",
+    "topic": "relations/functions",
+    "solution": "The first element has 3 choices and the second has 2 remaining choices, so 3 x 2 = 6."
+  },
+  {
+    "body": "The number of relations that can be defined on a set with 3 elements is:",
+    "options": {"A": "9", "B": "27", "C": "512", "D": "64"},
+    "answer": "C",
+    "difficulty": "hard",
+    "topic": "relations/functions",
+    "solution": "A x A has 9 elements, and each subset is a relation, so there are 2^9 = 512 relations."
+  },
+  {
+    "body": "The function f: R -> R defined by f(x) = x^2 is:",
+    "options": {"A": "One-one and onto", "B": "One-one but not onto", "C": "Onto but not one-one", "D": "Neither one-one nor onto"},
+    "answer": "D",
+    "difficulty": "medium",
+    "topic": "relations/functions",
+    "solution": "f(2) = f(-2), so it is not one-one. Negative numbers are never attained, so it is not onto."
+  },
+  {
+    "body": "The number of equivalence relations on the set {1, 2, 3} is:",
+    "options": {"A": "3", "B": "4", "C": "5", "D": "8"},
+    "answer": "C",
+    "difficulty": "hard",
+    "topic": "relations/functions",
+    "solution": "Equivalence relations correspond to partitions of the set. {1,2,3} has 5 partitions: 1 with one block, 3 with two blocks, and 1 with three blocks."
+  },
+  {
+    "body": "If A is a 2 x 3 matrix and B is a 3 x 4 matrix, the order of AB is:",
+    "options": {"A": "3 x 3", "B": "2 x 4", "C": "4 x 2", "D": "3 x 4"},
+    "answer": "B",
+    "difficulty": "easy",
+    "topic": "matrices",
+    "solution": "For (m x n)(n x p), the product has order m x p, so the order is 2 x 4."
+  },
+  {
+    "body": "The diagonal elements of a skew-symmetric matrix are:",
+    "options": {"A": "All equal to 1", "B": "All negative", "C": "All zero", "D": "All equal but non-zero"},
+    "answer": "C",
+    "difficulty": "easy",
+    "topic": "matrices",
+    "solution": "A^T = -A gives a_ii = -a_ii, so 2a_ii = 0 and a_ii = 0."
+  },
+  {
+    "body": "If A = [[2, 3], [1, 2]], then A^(-1) is:",
+    "options": {"A": "[[2, 3], [1, 2]]", "B": "[[-2, 3], [1, -2]]", "C": "[[2, 3], [-1, -2]]", "D": "[[2, -3], [-1, 2]]"},
+    "answer": "D",
+    "difficulty": "medium",
+    "topic": "matrices",
+    "solution": "|A| = 4 - 3 = 1. A^(-1) = (1/|A|) adj A = [[2, -3], [-1, 2]]."
+  },
+  {
+    "body": "If A = [[0, 1], [1, 0]], then A^2018 equals:",
+    "options": {"A": "A", "B": "I (identity matrix)", "C": "Zero matrix", "D": "2A"},
+    "answer": "B",
+    "difficulty": "medium",
+    "topic": "matrices",
+    "solution": "A^2 = I, so A^2018 = (A^2)^1009 = I."
+  },
+  {
+    "body": "If A is a square matrix such that A^2 = A, then (I + A)^3 - 7A equals:",
+    "options": {"A": "A", "B": "I", "C": "3A", "D": "Zero matrix"},
+    "answer": "B",
+    "difficulty": "medium",
+    "topic": "matrices",
+    "solution": "(I + A)^3 = I + 3A + 3A^2 + A^3 = I + 7A, since A^2 = A^3 = A. Subtracting 7A gives I."
+  },
+  {
+    "body": "If A = [[cos t, sin t], [-sin t, cos t]] with t = pi/6, the (1,2) entry of A^3 is:",
+    "options": {"A": "0", "B": "1/2", "C": "1", "D": "sqrt(3)/2"},
+    "answer": "C",
+    "difficulty": "hard",
+    "topic": "matrices",
+    "solution": "A^n = [[cos nt, sin nt], [-sin nt, cos nt]]. For n = 3, the (1,2) entry is sin(pi/2) = 1."
+  },
+  {
+    "body": "The value of the determinant |2 3; 4 5| is:",
+    "options": {"A": "-2", "B": "2", "C": "22", "D": "-22"},
+    "answer": "A",
+    "difficulty": "easy",
+    "topic": "determinants",
+    "solution": "2(5) - 3(4) = 10 - 12 = -2."
+  },
+  {
+    "body": "If A is a 3 x 3 matrix with |A| = 4, then |2A| equals:",
+    "options": {"A": "8", "B": "16", "C": "32", "D": "64"},
+    "answer": "C",
+    "difficulty": "medium",
+    "topic": "determinants",
+    "solution": "For an n x n matrix, |kA| = k^n |A|. So |2A| = 2^3 x 4 = 32."
+  },
+  {
+    "body": "The value of the determinant with rows (1, 2, 3), (1, 2, 3), (4, 5, 6) is:",
+    "options": {"A": "1", "B": "6", "C": "-6", "D": "0"},
+    "answer": "D",
+    "difficulty": "easy",
+    "topic": "determinants",
+    "solution": "Two identical rows make the determinant 0."
+  },
+  {
+    "body": "The area of the triangle with vertices (0, 0), (4, 0) and (0, 6) is:",
+    "options": {"A": "24", "B": "12", "C": "10", "D": "6"},
+    "answer": "B",
+    "difficulty": "easy",
+    "topic": "determinants",
+    "solution": "Area = (1/2)|det| = (1/2)(4 x 6) = 12 square units."
+  },
+  {
+    "body": "If A is a 3 x 3 non-singular matrix with |A| = 5, then |adj A| equals:",
+    "options": {"A": "5", "B": "15", "C": "125", "D": "25"},
+    "answer": "D",
+    "difficulty": "medium",
+    "topic": "determinants",
+    "solution": "|adj A| = |A|^(n-1) = 5^2 = 25."
+  },
+  {
+    "body": "The value of the determinant with rows (1, 1, 1), (1, 1+x, 1), (1, 1, 1+y) is:",
+    "options": {"A": "0", "B": "xy", "C": "x + y", "D": "1 + xy"},
+    "answer": "B",
+    "difficulty": "hard",
+    "topic": "determinants",
+    "solution": "Apply R2 -> R2 - R1 and R3 -> R3 - R1 to get rows (1,1,1), (0,x,0), (0,0,y). This is upper triangular, so the determinant is xy."
+  },
+  {
+    "body": "d/dx of e^(2x) is:",
+    "options": {"A": "e^(2x)", "B": "2e^(2x)", "C": "2xe^(2x)", "D": "e^(2x)/2"},
+    "answer": "B",
+    "difficulty": "easy",
+    "topic": "calculus",
+    "solution": "By the chain rule, d/dx e^(2x) = e^(2x) x 2 = 2e^(2x)."
+  },
+  {
+    "body": "The integral of 2x dx is:",
+    "options": {"A": "x^2 + C", "B": "2x^2 + C", "C": "x + C", "D": "x^2/2 + C"},
+    "answer": "A",
+    "difficulty": "easy",
+    "topic": "calculus",
+    "solution": "The integral of 2x dx is 2(x^2/2) + C = x^2 + C."
+  },
+  {
+    "body": "The value of the definite integral of x dx from 0 to 1 is:",
+    "options": {"A": "1", "B": "2", "C": "1/2", "D": "0"},
+    "answer": "C",
+    "difficulty": "easy",
+    "topic": "calculus",
+    "solution": "[x^2/2] from 0 to 1 = 1/2."
+  },
+  {
+    "body": "d/dx of tan x is:",
+    "options": {"A": "sec x tan x", "B": "sec^2 x", "C": "-cosec^2 x", "D": "cot x"},
+    "answer": "B",
+    "difficulty": "easy",
+    "topic": "calculus",
+    "solution": "It is a standard result: d/dx tan x = sec^2 x."
+  },
+  {
+    "body": "The slope of the tangent to the curve y = x^2 at x = 3 is:",
+    "options": {"A": "3", "B": "9", "C": "6", "D": "2"},
+    "answer": "C",
+    "difficulty": "easy",
+    "topic": "calculus",
+    "solution": "dy/dx = 2x, which equals 6 at x = 3."
+  },
+  {
+    "body": "The value of the integral of sin x dx from 0 to pi is:",
+    "options": {"A": "0", "B": "1", "C": "-2", "D": "2"},
+    "answer": "D",
+    "difficulty": "easy",
+    "topic": "calculus",
+    "solution": "[-cos x] from 0 to pi = -cos(pi) + cos(0) = 1 + 1 = 2."
+  },
+  {
+    "body": "The maximum value of f(x) = sin x + cos x is:",
+    "options": {"A": "1", "B": "sqrt(2)", "C": "2", "D": "1/sqrt(2)"},
+    "answer": "B",
+    "difficulty": "medium",
+    "topic": "calculus",
+    "solution": "sin x + cos x = sqrt(2) sin(x + pi/4), so its maximum is sqrt(2)."
+  },
+  {
+    "body": "If y = x^x (x > 0), then dy/dx is:",
+    "options": {"A": "x^x", "B": "x . x^(x-1)", "C": "x^x (1 + log x)", "D": "x^x log x"},
+    "answer": "C",
+    "difficulty": "medium",
+    "topic": "calculus",
+    "solution": "Take logs: log y = x log x. Differentiating gives y'/y = log x + 1, so y' = x^x (1 + log x)."
+  },
+  {
+    "body": "The integral of x e^x dx is:",
+    "options": {"A": "e^x (x + 1) + C", "B": "x e^x + C", "C": "e^x (x - 1) + C", "D": "x^2 e^x / 2 + C"},
+    "answer": "C",
+    "difficulty": "medium",
+    "topic": "calculus",
+    "solution": "By parts: x e^x - integral of e^x dx = x e^x - e^x + C = e^x (x - 1) + C."
+  },
+  {
+    "body": "The order and degree of the differential equation d2y/dx2 + (dy/dx)^3 = 0 are respectively:",
+    "options": {"A": "1 and 3", "B": "2 and 3", "C": "3 and 2", "D": "2 and 1"},
+    "answer": "D",
+    "difficulty": "medium",
+    "topic": "calculus",
+    "solution": "The highest derivative is d2y/dx2, so the order is 2. Its power is 1, so the degree is 1."
+  },
+  {
+    "body": "The integrating factor of dy/dx + y/x = x^2 is:",
+    "options": {"A": "x", "B": "1/x", "C": "e^x", "D": "log x"},
+    "answer": "A",
+    "difficulty": "medium",
+    "topic": "calculus",
+    "solution": "IF = e^(integral of 1/x dx) = e^(log x) = x."
+  },
+  {
+    "body": "The area bounded by y = x^2, the x-axis, and the lines x = 0 and x = 3 is:",
+    "options": {"A": "3", "B": "6", "C": "9", "D": "27"},
+    "answer": "C",
+    "difficulty": "medium",
+    "topic": "calculus",
+    "solution": "Area = integral of x^2 dx from 0 to 3 = [x^3/3] = 27/3 = 9 square units."
+  },
+  {
+    "body": "The value of the integral of sin x/(sin x + cos x) dx from 0 to pi/2 is:",
+    "options": {"A": "pi/2", "B": "pi/4", "C": "1", "D": "0"},
+    "answer": "B",
+    "difficulty": "hard",
+    "topic": "calculus",
+    "solution": "By the property f(a+b-x), I = integral of cos x/(sin x + cos x) dx. Adding both gives 2I = integral of 1 dx = pi/2, so I = pi/4."
+  },
+  {
+    "body": "The local maximum value of f(x) = x^3 - 3x is:",
+    "options": {"A": "-2", "B": "2", "C": "0", "D": "-1"},
+    "answer": "B",
+    "difficulty": "hard",
+    "topic": "calculus",
+    "solution": "f'(x) = 3x^2 - 3 = 0 gives x = ±1. f''(-1) = -6 < 0, so there is a local maximum at x = -1, with f(-1) = -1 + 3 = 2."
+  },
+  {
+    "body": "If a = i + 2j + 3k and b = 2i - j, then a . b equals:",
+    "options": {"A": "0", "B": "1", "C": "2", "D": "4"},
+    "answer": "A",
+    "difficulty": "easy",
+    "topic": "vectors",
+    "solution": "a . b = (1)(2) + (2)(-1) + (3)(0) = 0."
+  },
+  {
+    "body": "The magnitude of the vector 3i + 4j is:",
+    "options": {"A": "7", "B": "1", "C": "12", "D": "5"},
+    "answer": "D",
+    "difficulty": "easy",
+    "topic": "vectors",
+    "solution": "sqrt(3^2 + 4^2) = sqrt(25) = 5."
+  },
+  {
+    "body": "The angle between the vectors i + j and j + k is:",
+    "options": {"A": "30 degrees", "B": "45 degrees", "C": "60 degrees", "D": "90 degrees"},
+    "answer": "C",
+    "difficulty": "medium",
+    "topic": "vectors",
+    "solution": "cos t = (a . b)/(|a||b|) = 1/(sqrt(2) x sqrt(2)) = 1/2, so t = 60 degrees."
+  },
+  {
+    "body": "If |a| = 3, |b| = 4 and the angle between a and b is 30 degrees, then |a x b| equals:",
+    "options": {"A": "12", "B": "6", "C": "6 sqrt(3)", "D": "3"},
+    "answer": "B",
+    "difficulty": "medium",
+    "topic": "vectors",
+    "solution": "|a x b| = |a||b| sin 30 = 3 x 4 x 1/2 = 6."
+  },
+  {
+    "body": "The projection of a = 2i + 3j + k on b = i + 2j + 2k is:",
+    "options": {"A": "10", "B": "3", "C": "10/9", "D": "10/3"},
+    "answer": "D",
+    "difficulty": "medium",
+    "topic": "vectors",
+    "solution": "a . b = 2 + 6 + 2 = 10 and |b| = 3, so the projection is 10/3."
+  },
+  {
+    "body": "The area of a parallelogram whose diagonals are 3i + j - 2k and i - 3j + 4k is:",
+    "options": {"A": "5 sqrt(3)", "B": "10 sqrt(3)", "C": "15", "D": "5"},
+    "answer": "A",
+    "difficulty": "hard",
+    "topic": "vectors",
+    "solution": "Area = (1/2)|d1 x d2|. d1 x d2 = -2i - 14j - 10k, with magnitude sqrt(300) = 10 sqrt(3). So the area is 5 sqrt(3)."
+  },
+  {
+    "body": "The direction cosines of the x-axis are:",
+    "options": {"A": "0, 1, 0", "B": "1, 0, 0", "C": "0, 0, 1", "D": "1, 1, 1"},
+    "answer": "B",
+    "difficulty": "easy",
+    "topic": "3D geometry",
+    "solution": "The x-axis makes angles 0, 90 and 90 degrees with the axes, so the direction cosines are (1, 0, 0)."
+  },
+  {
+    "body": "The distance between the points (1, 2, 3) and (4, 6, 3) is:",
+    "options": {"A": "7", "B": "25", "C": "5", "D": "sqrt(7)"},
+    "answer": "C",
+    "difficulty": "easy",
+    "topic": "3D geometry",
+    "solution": "Distance = sqrt(3^2 + 4^2 + 0^2) = sqrt(25) = 5."
+  },
+  {
+    "body": "The distance of the point (1, 2, 3) from the plane x + 2y + 2z = 0 is:",
+    "options": {"A": "11/3", "B": "11", "C": "3", "D": "8/3"},
+    "answer": "A",
+    "difficulty": "medium",
+    "topic": "3D geometry",
+    "solution": "Distance = |1 + 4 + 6|/sqrt(1 + 4 + 4) = 11/3."
+  },
+  {
+    "body": "The direction cosines of the line (x-1)/2 = (y-2)/3 = (z-3)/6 are:",
+    "options": {"A": "2/7, 3/7, 6/7", "B": "2/9, 3/9, 6/9", "C": "1/7, 2/7, 3/7", "D": "2/11, 3/11, 6/11"},
+    "answer": "A",
+    "difficulty": "medium",
+    "topic": "3D geometry",
+    "solution": "The direction ratios are 2, 3, 6 and sqrt(4 + 9 + 36) = 7, so the direction cosines are 2/7, 3/7, 6/7."
+  },
+  {
+    "body": "The lines with direction ratios (2, -1, 3) and (1, k, -1) are perpendicular if k equals:",
+    "options": {"A": "1", "B": "2", "C": "-2", "D": "-1"},
+    "answer": "D",
+    "difficulty": "medium",
+    "topic": "3D geometry",
+    "solution": "Perpendicular means a1a2 + b1b2 + c1c2 = 0, so 2 - k - 3 = 0 and k = -1."
+  },
+  {
+    "body": "The shortest distance between the lines r = (i + j) + s(2i - j + k) and r = (2i + j - k) + t(3i - 5j + 2k) is:",
+    "options": {"A": "10/59", "B": "10/sqrt(59)", "C": "10", "D": "sqrt(59)/10"},
+    "answer": "B",
+    "difficulty": "hard",
+    "topic": "3D geometry",
+    "solution": "b1 x b2 = 3i - j - 7k with magnitude sqrt(59), and a2 - a1 = i - k. Dot product = 3 + 7 = 10, so the distance is 10/sqrt(59)."
+  },
+  {
+    "body": "Two fair coins are tossed. The probability of getting at least one head is:",
+    "options": {"A": "1/4", "B": "1/2", "C": "3/4", "D": "1"},
+    "answer": "C",
+    "difficulty": "easy",
+    "topic": "probability",
+    "solution": "P(no head) = 1/4, so P(at least one head) = 1 - 1/4 = 3/4."
+  },
+  {
+    "body": "If A and B are independent events with P(A) = 0.3 and P(B) = 0.4, then P(A and B) is:",
+    "options": {"A": "0.7", "B": "0.12", "C": "0.1", "D": "0.58"},
+    "answer": "B",
+    "difficulty": "easy",
+    "topic": "probability",
+    "solution": "For independent events, P(A and B) = P(A) x P(B) = 0.3 x 0.4 = 0.12."
+  },
+  {
+    "body": "Two fair dice are thrown. The probability that the sum of the numbers is 8 is:",
+    "options": {"A": "1/6", "B": "1/9", "C": "5/36", "D": "7/36"},
+    "answer": "C",
+    "difficulty": "medium",
+    "topic": "probability",
+    "solution": "Favourable outcomes: (2,6), (3,5), (4,4), (5,3), (6,2), which is 5 out of 36."
+  },
+  {
+    "body": "If P(A) = 0.4, P(B) = 0.5 and P(A and B) = 0.2, then P(A | B) is:",
+    "options": {"A": "0.5", "B": "0.2", "C": "0.8", "D": "0.4"},
+    "answer": "D",
+    "difficulty": "medium",
+    "topic": "probability",
+    "solution": "P(A | B) = P(A and B)/P(B) = 0.2/0.5 = 0.4."
+  },
+  {
+    "body": "Bag I has 3 red and 4 black balls; Bag II has 5 red and 6 black balls. A bag is chosen at random and a red ball is drawn. The probability that it came from Bag II is:",
+    "options": {"A": "33/68", "B": "3/7", "C": "35/68", "D": "5/11"},
+    "answer": "C",
+    "difficulty": "hard",
+    "topic": "probability",
+    "solution": "By Bayes' theorem: (1/2 x 5/11)/(1/2 x 3/7 + 1/2 x 5/11) = (5/11)/(3/7 + 5/11) = (5/11)/(68/77) = 35/68."
+  },
+  {
+    "body": "For a binomial distribution with mean 4 and variance 3, the number of trials n is:",
+    "options": {"A": "12", "B": "20", "C": "24", "D": "16"},
+    "answer": "D",
+    "difficulty": "hard",
+    "topic": "probability",
+    "solution": "np = 4 and npq = 3, so q = 3/4 and p = 1/4. Then n = 4/(1/4) = 16."
+  }
+]

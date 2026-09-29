@@ -1,0 +1,41 @@
+/*
+ * This is a manifest file that'll be compiled into application.css.
+ *
+ * With Propshaft, assets are served efficiently without preprocessing steps. You can still include
+ * application-wide styles in this file by adding a `*= require` directive.
+ *
+ * Theme presets: applied via [data-theme] on <html>, scoped so they override Tailwind utilities.
+ */
+
+[data-theme="dark"] { color-scheme: dark; }
+[data-theme="dark"] body { background-color: #0f172a; color: #e2e8f0; }
+[data-theme="dark"] .bg-slate-50 { background-color: #0f172a; }
+[data-theme="dark"] .bg-white { background-color: #1e293b; }
+[data-theme="dark"] .text-slate-900 { color: #e2e8f0; }
+[data-theme="dark"] .text-slate-800 { color: #e2e8f0; }
+[data-theme="dark"] .text-slate-600 { color: #94a3b8; }
+[data-theme="dark"] .text-slate-500 { color: #94a3b8; }
+[data-theme="dark"] .border-slate-200 { border-color: #334155; }
+[data-theme="dark"] .hover\:bg-slate-100:hover { background-color: #334155; }
+[data-theme="dark"] .hover\:bg-slate-50:hover { background-color: #334155; }
+[data-theme="dark"] .bg-indigo-50 { background-color: #312e81; }
+[data-theme="dark"] .text-indigo-700 { color: #a5b4fc; }
+[data-theme="dark"] .hover\:border-indigo-300:hover { border-color: #818cf8; }
+
+[data-theme="focus"] body { background-color: #f4f1e8; color: #2f2b22; }
+[data-theme="focus"] .bg-slate-50 { background-color: #f4f1e8; }
+[data-theme="focus"] .bg-white { background-color: #faf7ef; }
+[data-theme="focus"] .bg-indigo-600 { background-color: #5f6b3c; }
+[data-theme="focus"] .hover\:bg-indigo-700:hover { background-color: #4d5731; }
+[data-theme="focus"] .text-indigo-600 { color: #5f6b3c; }
+[data-theme="focus"] .hover\:bg-indigo-50:hover { background-color: #ecead9; }
+[data-theme="focus"] .bg-indigo-50 { background-color: #ecead9; }
+[data-theme="focus"] .text-indigo-700 { color: #4d5731; }
+
+[data-theme="vibrant"] .bg-indigo-600 { background-color: #e11d48; }
+[data-theme="vibrant"] .hover\:bg-indigo-700:hover { background-color: #be123c; }
+[data-theme="vibrant"] .text-indigo-600 { color: #e11d48; }
+[data-theme="vibrant"] .bg-indigo-50 { background-color: #ffe4e6; }
+[data-theme="vibrant"] .text-indigo-700 { color: #be123c; }
+[data-theme="vibrant"] .hover\:bg-indigo-50:hover { background-color: #ffe4e6; }
+[data-theme="vibrant"] .ring-indigo-500 { --tw-ring-color: #e11d48; }
