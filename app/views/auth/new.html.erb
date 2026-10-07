@@ -5,23 +5,40 @@
   <h1 class="mb-1 text-2xl font-bold text-indigo-600">Study</h1>
   <p class="mb-6 text-sm text-slate-500">Sign in to continue to your books, notes and practice.</p>
 
+  <% if flash[:alert].present? %>
+    <div class="mb-4 rounded-lg border border-amber-300 bg-amber-50 px-4 py-3 text-sm text-amber-800">
+      <%= flash[:alert] %>
+    </div>
+  <% end %>
+
   <div class="flex flex-col gap-3">
     <% [
-      ["google", "Continue with Google"],
+      ["google_oauth2", "Continue with Google"],
       ["apple", "Continue with Apple"],
       ["facebook", "Continue with Facebook"],
-      ["microsoft", "Continue with Microsoft"]
+      ["microsoft_graph", "Continue with Microsoft"]
     ].each do |provider, label| %>
       <%= button_to auth_provider_path(provider: provider),
             method: :post,
             class: "flex w-full items-center justify-center gap-3 rounded-lg border border-slate-300 bg-white px-4 py-2.5 text-sm font-medium text-slate-700 shadow-sm hover:bg-slate-50" do %>
-        <%= image_tag "#{provider}.svg", alt: "", class: "h-5 w-5" %>
+        <%= image_tag "#{provider.split("_").first}.svg", alt: "", class: "h-5 w-5" %>
         <span><%= label %></span>
       <% end %>
     <% end %>
+
+    <div class="flex items-center gap-3 py-1">
+      <span class="h-px flex-1 bg-slate-200"></span>
+      <span class="text-xs text-slate-400">or</span>
+      <span class="h-px flex-1 bg-slate-200"></span>
+    </div>
+
+    <%= button_to "Continue with a demo account",
+          auth_provider_path(provider: "demo"),
+          method: :post,
+          class: "w-full rounded-lg bg-indigo-600 px-4 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-indigo-700" %>
   </div>
 
   <p class="mt-6 text-center text-xs text-slate-400">
-    Local demo accounts for now — real OAuth later.
+    Providers light up once their OAuth keys are in <code class="font-mono">.env</code> — see <code class="font-mono">.env.example</code>.
   </p>
 </div>

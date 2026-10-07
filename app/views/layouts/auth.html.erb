@@ -8,13 +8,20 @@
 
     <script>
       (function () {
-        var preset = localStorage.getItem("study-theme") || "system";
-        var resolved = preset === "system"
+        var sync = localStorage.getItem("study-sync");
+        var preset = localStorage.getItem("study-theme") || "light";
+        if (preset === "system") { sync = "1"; preset = "light"; }
+        if (sync === null) sync = "1";
+        var resolved = sync !== "0"
           ? (window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light")
           : preset;
         document.documentElement.dataset.theme = resolved;
       })();
     </script>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Instrument+Sans:ital,wght@0,400..700;1,400..700&family=Instrument+Serif:ital@0;1&family=JetBrains+Mono:wght@400..700&display=swap" rel="stylesheet">
 
     <%= stylesheet_link_tag :app, "data-turbo-track": "reload" %>
     <%= javascript_importmap_tags %>

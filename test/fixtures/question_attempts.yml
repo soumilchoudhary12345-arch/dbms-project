@@ -1,13 +1,12 @@
 # Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
 
+# Generation creates one attempt per question, unanswered (answer/correct NULL).
 one:
   quiz_session: one
   question: one
-  answer: MyString
-  correct: false
 
 two:
   quiz_session: two
   question: two
-  answer: MyString
-  correct: false
+  answer: A
+  correct: true

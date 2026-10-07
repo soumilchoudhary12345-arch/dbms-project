@@ -19,7 +19,7 @@
   </div>
   <div class="rounded-lg border border-slate-200 bg-white p-4">
     <div class="text-sm text-slate-500">Question mix</div>
-    <div class="text-lg font-semibold"><%= @session.difficulty_mix %></div>
+    <div class="text-base font-semibold leading-snug"><%= @session.mix_label %></div>
   </div>
 </div>
 
@@ -32,7 +32,7 @@
         <span class="text-sm font-semibold <%= attempt.correct ? 'text-emerald-600' : 'text-rose-600' %>">
           Q<%= i + 1 %> · <%= attempt.correct ? "Correct" : (attempt.answer.blank? ? "Skipped" : "Wrong") %>
         </span>
-        <span class="text-xs text-slate-400"><%= q.source %></span>
+        <span class="text-xs text-slate-400"><% if q.topic.present? %><%= topic_name(q.topic) %> · <% end %><%= q.source %></span>
       </div>
       <p class="mb-3 min-w-0 break-words whitespace-pre-line text-slate-800"><%= q.body %></p>
 

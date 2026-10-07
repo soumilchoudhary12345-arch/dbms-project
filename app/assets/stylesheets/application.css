@@ -1,41 +1,674 @@
 /*
- * This is a manifest file that'll be compiled into application.css.
+ * Study design system — atmospheres over a variable token set.
  *
- * With Propshaft, assets are served efficiently without preprocessing steps. You can still include
- * application-wide styles in this file by adding a `*= require` directive.
+ * Tailwind (app/assets/builds/tailwind.css) loads after this file, so every
+ * override is scoped under html[data-theme] (specificity 0,2,0) to beat single
+ * utilities regardless of order. Token values live in the theme blocks; one
+ * shared remap layer consumes them.
  *
- * Theme presets: applied via [data-theme] on <html>, scoped so they override Tailwind utilities.
+ * Ten atmospheres:
+ *   light    — graph paper (cool blue grid, the math notebook)
+ *   sunset   — peach dusk paper, ember-orange ink
+ *   focus    — warm paper with ruled lines, olive ink
+ *   vibrant  — rose paper with rose grid
+ *   dark     — green chalkboard with faint chalk grid
+ *   blueprint— drafting blue, white grid, cyan ink
+ *   terminal — near-black blue, CRT scanlines, mono type, terminal green
+ *   solar    — solarized deep teal, hacker classic
+ *   atelier  — matte black canvas, gold leaf accent, oversized serif type
+ *   noir     — cinema monochrome, tracked caps wordmark, no grid
+ * Sync toggle (themes page) mirrors the OS light/dark; inline head script
+ * resolves before paint. Switching crossfades via .theming (theme_controller).
  */
 
-[data-theme="dark"] { color-scheme: dark; }
-[data-theme="dark"] body { background-color: #0f172a; color: #e2e8f0; }
-[data-theme="dark"] .bg-slate-50 { background-color: #0f172a; }
-[data-theme="dark"] .bg-white { background-color: #1e293b; }
-[data-theme="dark"] .text-slate-900 { color: #e2e8f0; }
-[data-theme="dark"] .text-slate-800 { color: #e2e8f0; }
-[data-theme="dark"] .text-slate-600 { color: #94a3b8; }
-[data-theme="dark"] .text-slate-500 { color: #94a3b8; }
-[data-theme="dark"] .border-slate-200 { border-color: #334155; }
-[data-theme="dark"] .hover\:bg-slate-100:hover { background-color: #334155; }
-[data-theme="dark"] .hover\:bg-slate-50:hover { background-color: #334155; }
-[data-theme="dark"] .bg-indigo-50 { background-color: #312e81; }
-[data-theme="dark"] .text-indigo-700 { color: #a5b4fc; }
-[data-theme="dark"] .hover\:border-indigo-300:hover { border-color: #818cf8; }
+/* ---------- tokens ---------- */
 
-[data-theme="focus"] body { background-color: #f4f1e8; color: #2f2b22; }
-[data-theme="focus"] .bg-slate-50 { background-color: #f4f1e8; }
-[data-theme="focus"] .bg-white { background-color: #faf7ef; }
-[data-theme="focus"] .bg-indigo-600 { background-color: #5f6b3c; }
-[data-theme="focus"] .hover\:bg-indigo-700:hover { background-color: #4d5731; }
-[data-theme="focus"] .text-indigo-600 { color: #5f6b3c; }
-[data-theme="focus"] .hover\:bg-indigo-50:hover { background-color: #ecead9; }
-[data-theme="focus"] .bg-indigo-50 { background-color: #ecead9; }
-[data-theme="focus"] .text-indigo-700 { color: #4d5731; }
+html[data-theme] {
+  --paper: #fbfcfd;
+  --grid-minor: #e9eef5;
+  --grid-major: #d6dfea;
+  --surface: #ffffff;
+  --surface-2: #f1f4f8;
+  --line: #dce3ec;
+  --line-soft: #e8edf3;
+  --ink: #171a21;
+  --muted: #5e6675;
+  --faint: #6e7685;
+  --accent: #2f4bc4;
+  --accent-strong: #243ba6;
+  --accent-soft: #e7ecfb;
+  --accent-text: #2f4bc4;
+  --accent-ink: #243ba6;
+  --on-accent: #ffffff;
+  --ok-ink: #157a52;
+  --ok-line: #9fdec0;
+  --bad-ink: #be2c51;
+  --bad-line: #f5b9c9;
+  --warn-bg: #fcf3df;
+  --warn-line: #f0d490;
+  --warn-ink: #8a5a11;
+}
 
-[data-theme="vibrant"] .bg-indigo-600 { background-color: #e11d48; }
-[data-theme="vibrant"] .hover\:bg-indigo-700:hover { background-color: #be123c; }
-[data-theme="vibrant"] .text-indigo-600 { color: #e11d48; }
-[data-theme="vibrant"] .bg-indigo-50 { background-color: #ffe4e6; }
-[data-theme="vibrant"] .text-indigo-700 { color: #be123c; }
-[data-theme="vibrant"] .hover\:bg-indigo-50:hover { background-color: #ffe4e6; }
-[data-theme="vibrant"] .ring-indigo-500 { --tw-ring-color: #e11d48; }
+html[data-theme="dark"] {
+  color-scheme: dark;
+  --paper: #0e2a1e;
+  --grid-minor: rgb(226 236 229 / 0.04);
+  --grid-major: rgb(226 236 229 / 0.075);
+  --surface: #153527;
+  --surface-2: #1b4132;
+  --line: #24503e;
+  --line-soft: #1e4535;
+  --ink: #e7efe9;
+  --muted: #9db4a6;
+  --faint: #8fa89a;
+  --accent: #5666da;
+  --accent-strong: #4759d1;
+  --accent-soft: rgb(86 102 218 / 0.2);
+  --accent-text: #93a1f3;
+  --accent-ink: #aab6f8;
+  --ok-ink: #6fd3a6;
+  --ok-line: #2e6b52;
+  --bad-ink: #ff8fa8;
+  --bad-line: #7a3040;
+  --warn-bg: rgb(240 190 80 / 0.12);
+  --warn-line: #7a6230;
+  --warn-ink: #ebc778;
+}
+
+html[data-theme="focus"] {
+  --paper: #f4f1e6;
+  --grid-major: #d9d2bb;
+  --surface: #fbf9f1;
+  --surface-2: #efead8;
+  --line: #ded7c2;
+  --line-soft: #e9e4d2;
+  --ink: #2c2920;
+  --muted: #6b6452;
+  --faint: #746d59;
+  --accent: #5f6b3c;
+  --accent-strong: #4c5731;
+  --accent-soft: #ecead9;
+  --accent-text: #5f6b3c;
+  --accent-ink: #4c5731;
+  --ok-ink: #2e6b3a;
+  --ok-line: #a9dcb4;
+  --bad-ink: #b0304c;
+  --bad-line: #e8a9b4;
+  --warn-bg: #f7eed6;
+  --warn-line: #e5ce94;
+  --warn-ink: #8a6620;
+}
+
+html[data-theme="vibrant"] {
+  --paper: #fff5f7;
+  --grid-minor: #fce7ec;
+  --grid-major: #f7d3dc;
+  --surface: #ffffff;
+  --surface-2: #fff0f3;
+  --line: #f3d7df;
+  --line-soft: #f9e6eb;
+  --ink: #20131a;
+  --muted: #8a6472;
+  --faint: #8a6673;
+  --accent: #e11d48;
+  --accent-strong: #be123c;
+  --accent-soft: #ffe4e6;
+  --accent-text: #d41a44;
+  --accent-ink: #be123c;
+}
+
+html[data-theme="sunset"] {
+  --paper: #fdf6ef;
+  --grid-minor: #f7e6d8;
+  --grid-major: #f0d5c0;
+  --surface: #fffaf5;
+  --surface-2: #f9ede2;
+  --line: #ecd7c5;
+  --line-soft: #f5e5d8;
+  --ink: #2a1a10;
+  --muted: #7c6355;
+  --faint: #85695a;
+  --accent: #d95f26;
+  --accent-strong: #d05a24;
+  --accent-soft: #fdeadf;
+  --accent-text: #b84811;
+  --accent-ink: #a8430f;
+  --on-accent: #1f0a01;
+  --ok-ink: #157a52;
+  --ok-line: #9fdec0;
+  --bad-ink: #be2c51;
+  --bad-line: #f5b9c9;
+  --warn-bg: #fcf3df;
+  --warn-line: #f0d490;
+  --warn-ink: #8a5a11;
+}
+
+html[data-theme="blueprint"] {
+  color-scheme: dark;
+  --paper: #0b2e52;
+  --grid-minor: rgb(255 255 255 / 0.05);
+  --grid-major: rgb(255 255 255 / 0.1);
+  --surface: #123a64;
+  --surface-2: #174574;
+  --line: #235789;
+  --line-soft: #1b4a76;
+  --ink: #e9f3fc;
+  --muted: #a9c4de;
+  --faint: #8fb0cd;
+  --accent: #5fb8f0;
+  --accent-strong: #3da2dd;
+  --accent-soft: #123f5e;
+  --accent-text: #8fd2f7;
+  --accent-ink: #b8e4fb;
+  --on-accent: #06263f;
+  --ok-ink: #7fe0b0;
+  --ok-line: #1e6b4e;
+  --bad-ink: #ff9d9d;
+  --bad-line: #7a3434;
+  --warn-bg: rgb(250 190 80 / 0.12);
+  --warn-line: #7a6230;
+  --warn-ink: #f0c674;
+}
+
+html[data-theme="solar"] {
+  color-scheme: dark;
+  --paper: #002b36;
+  --grid-minor: rgb(133 150 140 / 0.05);
+  --grid-major: rgb(133 150 140 / 0.09);
+  --surface: #073642;
+  --surface-2: #0a4553;
+  --line: #10566a;
+  --line-soft: #0b4759;
+  --ink: #e9e4d0;
+  --muted: #9fb3b5;
+  --faint: #8aa0a2;
+  --accent: #2aa198;
+  --accent-strong: #24968e;
+  --accent-soft: #0b3f47;
+  --accent-text: #56c9bf;
+  --accent-ink: #7fd9d0;
+  --on-accent: #001f27;
+  --ok-ink: #9fbd3f;
+  --ok-line: #3d4d14;
+  --bad-ink: #f07167;
+  --bad-line: #6e2a26;
+  --warn-bg: rgb(203 75 22 / 0.15);
+  --warn-line: #7a4416;
+  --warn-ink: #eb9a5e;
+}
+
+html[data-theme="noir"] {
+  color-scheme: dark;
+  --paper: #0a0a0a;
+  --grid-minor: rgb(255 255 255 / 0.04);
+  --grid-major: rgb(255 255 255 / 0.07);
+  --surface: #171717;
+  --surface-2: #1f1f1f;
+  --line: #2e2e2e;
+  --line-soft: #262626;
+  --ink: #f4f4f4;
+  --muted: #a3a3a3;
+  --faint: #8f8f8f;
+  --accent: #ffffff;
+  --accent-strong: #e5e5e5;
+  --accent-soft: #262626;
+  --accent-text: #ffffff;
+  --accent-ink: #e5e5e5;
+  --on-accent: #0a0a0a;
+  --ok-ink: #8fe0a5;
+  --ok-line: #2d5f3c;
+  --bad-ink: #ff9b9b;
+  --bad-line: #7a3535;
+  --warn-bg: rgb(255 255 255 / 0.07);
+  --warn-line: #6f6f6f;
+  --warn-ink: #e0b768;
+}
+
+html[data-theme="terminal"] {
+  color-scheme: dark;
+  --paper: #0b1220;
+  --grid-minor: rgb(125 211 252 / 0.04);
+  --grid-major: rgb(125 211 252 / 0.08);
+  --surface: #121b2e;
+  --surface-2: #182338;
+  --line: #24324d;
+  --line-soft: #1c2942;
+  --ink: #d8e4f5;
+  --muted: #93a7c4;
+  --faint: #7288a8;
+  --accent: #35d07f;
+  --accent-strong: #26b46c;
+  --accent-soft: #1d3b2c;
+  --accent-text: #5fe3a1;
+  --accent-ink: #86efb8;
+  --on-accent: #06130c;
+  --ok-ink: #6ee7a8;
+  --ok-line: #1f6b4a;
+  --bad-ink: #ff9191;
+  --bad-line: #7a3038;
+  --warn-bg: rgb(250 180 70 / 0.12);
+  --warn-line: #7a6230;
+  --warn-ink: #f0c674;
+}
+
+html[data-theme="atelier"] {
+  color-scheme: dark;
+  --paper: #0c0b0a;
+  --grid-minor: rgb(242 239 232 / 0.05);
+  --grid-major: rgb(242 239 232 / 0.09);
+  --surface: #171513;
+  --surface-2: #201d1a;
+  --line: #302c27;
+  --line-soft: #262320;
+  --ink: #f2efe8;
+  --muted: #b0a99b;
+  --faint: #8f887a;
+  --accent: #d4a53d;
+  --accent-strong: #c1942f;
+  --accent-soft: #2e2618;
+  --accent-text: #e8c46a;
+  --accent-ink: #f0d18d;
+  --on-accent: #171204;
+  --ok-ink: #8fd6a8;
+  --ok-line: #2d5f42;
+  --bad-ink: #f09a9a;
+  --bad-line: #7a3a3a;
+  --warn-bg: rgb(212 165 61 / 0.12);
+  --warn-line: #6f5a2a;
+  --warn-ink: #e8c46a;
+}
+
+/* ---------- base ---------- */
+
+html[data-theme] body {
+  background-color: var(--paper);
+  background-image:
+    linear-gradient(var(--grid-major) 1px, transparent 1px),
+    linear-gradient(90deg, var(--grid-major) 1px, transparent 1px),
+    linear-gradient(var(--grid-minor) 1px, transparent 1px),
+    linear-gradient(90deg, var(--grid-minor) 1px, transparent 1px);
+  background-size: 96px 96px, 96px 96px, 16px 16px, 16px 16px;
+  color: var(--ink);
+  font-family: "Instrument Sans", ui-sans-serif, system-ui, sans-serif;
+  font-size: 16px;
+  line-height: 1.55;
+  -webkit-font-smoothing: antialiased;
+}
+
+html[data-theme="focus"] body {
+  background-image: repeating-linear-gradient(
+    to bottom,
+    transparent 0 30px,
+    var(--grid-major) 30px 31px
+  );
+  background-size: auto;
+}
+
+html[data-theme="terminal"] body {
+  background-image: repeating-linear-gradient(
+    0deg,
+    transparent 0 3px,
+    rgb(125 211 252 / 0.025) 3px 4px
+  );
+  background-size: auto;
+  font-family: "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, monospace;
+  font-size: 15px;
+}
+
+html[data-theme="atelier"] body {
+  background-image: none;
+}
+
+html[data-theme="noir"] body {
+  background-image: none;
+}
+
+/* ---------- type ---------- */
+
+html[data-theme] h1,
+html[data-theme] h2,
+html[data-theme] h3 {
+  font-family: "Instrument Serif", Georgia, "Times New Roman", serif;
+  font-weight: 400;
+}
+
+html[data-theme] h1 {
+  font-size: 2.125rem;
+  line-height: 1.15;
+  letter-spacing: -0.01em;
+}
+
+html[data-theme] h2 {
+  font-size: 1.5rem;
+  line-height: 1.25;
+}
+
+html[data-theme] h3 {
+  font-size: 1.2rem;
+  line-height: 1.3;
+}
+
+html[data-theme] .wordmark {
+  font-family: "Instrument Serif", Georgia, serif;
+  font-style: italic;
+  font-weight: 400;
+  font-size: 1.5rem;
+  line-height: 1;
+  color: var(--accent-text);
+  letter-spacing: 0;
+}
+
+/* terminal — mono everywhere, prompt-green wordmark */
+html[data-theme="terminal"] h1,
+html[data-theme="terminal"] h2,
+html[data-theme="terminal"] h3 {
+  font-family: "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, monospace;
+  font-weight: 500;
+}
+
+html[data-theme="terminal"] .wordmark {
+  font-family: "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, monospace;
+  font-style: normal;
+  font-weight: 700;
+  font-size: 1.2rem;
+}
+
+/* atelier — type is the art: oversized display serif on matte black */
+html[data-theme="atelier"] h1 {
+  font-size: 2.75rem;
+  line-height: 1.05;
+  letter-spacing: -0.02em;
+}
+
+html[data-theme="atelier"] h2 {
+  font-size: 1.7rem;
+}
+
+html[data-theme="atelier"] .wordmark {
+  font-size: 1.7rem;
+}
+
+/* noir — marquee lockup: tracked caps, no italic */
+html[data-theme="noir"] .wordmark {
+  font-family: "Instrument Sans", ui-sans-serif, sans-serif;
+  font-style: normal;
+  font-weight: 600;
+  font-size: 1.05rem;
+  letter-spacing: 0.24em;
+  text-transform: uppercase;
+}
+
+html[data-theme="noir"] h1 {
+  letter-spacing: 0.015em;
+}
+
+/* ---------- surfaces & text (shared remap) ---------- */
+
+html[data-theme] .bg-white { background-color: var(--surface); }
+html[data-theme] .bg-slate-50 { background-color: var(--paper); }
+html[data-theme] .bg-slate-50\/60 { background-color: var(--surface-2); }
+html[data-theme] .bg-slate-100 { background-color: var(--surface-2); }
+html[data-theme] .bg-slate-200 { background-color: var(--line-soft); }
+
+html[data-theme] .text-slate-900,
+html[data-theme] .text-slate-800,
+html[data-theme] .text-slate-700 { color: var(--ink); }
+
+html[data-theme] .text-slate-600,
+html[data-theme] .text-slate-500 { color: var(--muted); }
+
+html[data-theme] .text-slate-400 { color: var(--faint); }
+
+html[data-theme] .text-white { color: var(--on-accent); }
+
+html[data-theme] .border-slate-100,
+html[data-theme] .border-slate-200,
+html[data-theme] .border-slate-300 { border-color: var(--line); }
+
+html[data-theme] .hover\:bg-slate-50:hover,
+html[data-theme] .hover\:bg-slate-100:hover { background-color: var(--surface-2); }
+
+/* ---------- accent (indigo utilities) ---------- */
+
+html[data-theme] .bg-indigo-50,
+html[data-theme] .hover\:bg-indigo-50:hover { background-color: var(--accent-soft); }
+
+html[data-theme] .bg-indigo-600 { background-color: var(--accent); }
+html[data-theme] .bg-indigo-700,
+html[data-theme] .hover\:bg-indigo-700:hover { background-color: var(--accent-strong); }
+
+html[data-theme] .text-indigo-600 { color: var(--accent-text); }
+html[data-theme] .text-indigo-700,
+html[data-theme] .text-indigo-800 { color: var(--accent-ink); }
+
+html[data-theme] .border-indigo-200 {
+  border-color: color-mix(in srgb, var(--accent) 30%, transparent);
+}
+html[data-theme] .hover\:border-indigo-300:hover {
+  border-color: color-mix(in srgb, var(--accent) 55%, transparent);
+}
+
+html[data-theme] .ring-indigo-500 { --tw-ring-color: var(--accent); }
+html[data-theme] .accent-indigo-600 { accent-color: var(--accent); }
+
+/* ---------- semantic feedback ---------- */
+
+html[data-theme] .border-emerald-300 { border-color: var(--ok-line); }
+html[data-theme] .text-emerald-600,
+html[data-theme] .text-emerald-700 { color: var(--ok-ink); }
+
+html[data-theme] .border-rose-300 { border-color: var(--bad-line); }
+html[data-theme] .text-rose-600 { color: var(--bad-ink); }
+
+html[data-theme] .bg-amber-50 { background-color: var(--warn-bg); }
+html[data-theme] .border-amber-300 { border-color: var(--warn-line); }
+html[data-theme] .text-amber-700,
+html[data-theme] .text-amber-800 { color: var(--warn-ink); }
+
+/* ---------- depth ---------- */
+
+html[data-theme] .shadow-sm {
+  box-shadow:
+    var(--tw-inset-ring-shadow),
+    var(--tw-ring-offset-shadow),
+    var(--tw-ring-shadow),
+    0 1px 2px rgb(15 23 42 / 0.06);
+}
+
+/* ---------- sync toggle ---------- */
+
+html[data-theme] .sync-knob {
+  background: #fff;
+  box-shadow: 0 1px 2px rgb(0 0 0 / 0.3);
+  transition: transform 0.2s ease;
+}
+
+/* ---------- the switch: one orchestrated crossfade ---------- */
+
+@media (prefers-reduced-motion: no-preference) {
+  html.theming,
+  html.theming *,
+  html.theming *::before,
+  html.theming *::after {
+    transition:
+      background-color 0.4s ease,
+ border-color 0.4s ease,
+ color 0.4s ease,
+ box-shadow 0.4s ease !important;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html[data-theme] *,
+  html[data-theme] *::before,
+  html[data-theme] *::after {
+    transition-duration: 0.01ms !important;
+    animation-duration: 0.01ms !important;
+  }
+}
+
+/* ---------- quality floor ---------- */
+
+html[data-theme] :focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+
+/* ---------- collapsible sidebar ---------- */
+
+html[data-theme] .sidebar {
+  transition: width 0.2s ease;
+}
+
+html.nav-collapsed .sidebar {
+  width: 4.5rem;
+  padding-left: 0.5rem;
+  padding-right: 0.5rem;
+}
+
+html.nav-collapsed .nav-label,
+html.nav-collapsed .wordmark {
+  display: none;
+}
+
+html.nav-collapsed .nav-link,
+html.nav-collapsed .brand {
+  justify-content: center;
+  padding-left: 0;
+  padding-right: 0;
+}
+
+html.nav-collapsed .nav-toggle svg {
+  transform: rotate(180deg);
+}
+
+html[data-theme] .nav-toggle {
+  position: absolute;
+  top: 5.25rem;
+  right: -0.7rem;
+  height: 1.4rem;
+  width: 1.4rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 999px;
+  background: var(--surface);
+  border: 1px solid var(--line);
+  color: var(--muted);
+  box-shadow: 0 1px 2px rgb(0 0 0 / 0.15);
+  cursor: pointer;
+  transition: color 0.15s ease;
+}
+
+html[data-theme] .nav-toggle:hover {
+  color: var(--ink);
+}
+
+html[data-theme] .nav-toggle svg {
+  height: 0.9rem;
+  width: 0.9rem;
+  transition: transform 0.2s ease;
+}
+
+/* ---------- home hero ---------- */
+
+html[data-theme] .hero-title {
+  font-size: clamp(2.5rem, 6vw, 3.5rem);
+  line-height: 1.06;
+  letter-spacing: -0.015em;
+}
+
+html[data-theme] .toc-title {
+  font-family: "Instrument Serif", Georgia, serif;
+  font-size: 1.5rem;
+  line-height: 1.2;
+}
+
+html[data-theme] .home-plot .axis {
+  stroke: var(--line);
+  stroke-width: 1.5;
+}
+
+html[data-theme] .home-plot .curve {
+  fill: none;
+  stroke: var(--accent);
+  stroke-width: 2.5;
+  stroke-linecap: round;
+}
+
+html[data-theme] .home-plot .curve2 {
+  fill: none;
+  stroke: var(--muted);
+  stroke-width: 1.75;
+  stroke-linecap: round;
+  opacity: 0.9;
+}
+
+html[data-theme] .home-plot .pt {
+  fill: var(--accent);
+  stroke: var(--paper);
+  stroke-width: 2;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  html[data-theme] .home-plot .curve {
+    stroke-dasharray: 1300;
+    stroke-dashoffset: 1300;
+    animation: plot-draw 1.2s cubic-bezier(0.4, 0, 0.2, 1) 0.2s forwards;
+  }
+
+  html[data-theme] .home-plot .curve2 {
+    stroke-dasharray: 1400;
+    stroke-dashoffset: 1400;
+    animation: plot-draw 1.2s cubic-bezier(0.4, 0, 0.2, 1) 0.6s forwards;
+  }
+
+  html[data-theme] .home-plot .pt {
+    opacity: 0;
+    animation: pt-in 0.45s ease 1.85s forwards;
+  }
+}
+
+@keyframes plot-draw {
+  to { stroke-dashoffset: 0; }
+}
+
+@keyframes pt-in {
+  to { opacity: 1; }
+}
+
+/* ---------- sticky notes: bright slips, legible on every theme ---------- */
+
+html[data-theme] .sticky-note {
+  border: 1px solid rgb(0 0 0 / 0.08);
+  border-radius: 2px;
+  box-shadow: 0 6px 14px rgb(0 0 0 / 0.16);
+  padding: 0.7rem 0.8rem;
+  font-size: 0.9rem;
+  line-height: 1.45;
+  min-height: 7.5rem;
+  resize: vertical;
+  transition: transform 0.15s ease;
+}
+
+html[data-theme] .sticky-note:hover {
+  transform: rotate(0deg) !important;
+}
+
+html[data-theme] .sticky-1 {
+  background: #fff3a8;
+  color: #3d3210;
+  transform: rotate(-1.3deg);
+}
+
+html[data-theme] .sticky-2 {
+  background: #ffd9e0;
+  color: #57202d;
+  transform: rotate(0.9deg);
+}
+
+html[data-theme] .sticky-3 {
+  background: #d7f5e4;
+  color: #123f2c;
+  transform: rotate(-0.6deg);
+}

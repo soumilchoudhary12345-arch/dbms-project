@@ -17,13 +17,23 @@
 
     <script>
       (function () {
-        var preset = localStorage.getItem("study-theme") || "system";
-        var resolved = preset === "system"
+        var sync = localStorage.getItem("study-sync");
+        var preset = localStorage.getItem("study-theme") || "light";
+        if (preset === "system") { sync = "1"; preset = "light"; }
+        if (sync === null) sync = "1";
+        var resolved = sync !== "0"
           ? (window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light")
           : preset;
         document.documentElement.dataset.theme = resolved;
+        if (localStorage.getItem("study-nav") === "closed") {
+          document.documentElement.classList.add("nav-collapsed");
+        }
       })();
     </script>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Instrument+Sans:ital,wght@0,400..700;1,400..700&family=Instrument+Serif:ital@0;1&family=JetBrains+Mono:wght@400..700&display=swap" rel="stylesheet">
 
     <%= stylesheet_link_tag :app, "data-turbo-track": "reload" %>
     <%= javascript_importmap_tags %>
@@ -31,34 +41,54 @@
 
   <body class="min-h-screen bg-slate-50 text-slate-900">
     <div class="flex min-h-screen">
-      <aside class="flex w-56 shrink-0 flex-col gap-1 border-r border-slate-200 bg-white p-4">
-        <%= link_to root_path, class: "mb-6 flex items-center gap-2 px-3" do %>
-          <%= image_tag "logo.svg", alt: "Study logo", class: "h-8 w-8" %>
-          <span class="text-xl font-bold tracking-tight text-indigo-600">Study</span>
+      <aside class="sidebar relative flex w-56 shrink-0 flex-col gap-1 border-r border-slate-200 bg-white px-3 py-4"
+             data-controller="nav">
+        <%= link_to root_path, class: "brand mb-6 flex items-center gap-2 px-3" do %>
+          <%= image_tag "logo.svg", alt: "Study logo", class: "h-8 w-8 shrink-0" %>
+          <span class="wordmark">Study</span>
         <% end %>
 
-        <%= link_to "Notes", notes_path,
-              class: nav_class(request.path.start_with?("/notes")) %>
-        <%= link_to "Textbook", root_path,
-              class: nav_class(request.path == "/" || request.path.start_with?("/books") || request.path.start_with?("/pdf/books")) %>
-        <%= link_to "Questions", questions_path,
-              class: nav_class(request.path.start_with?("/questions")) %>
-        <%= link_to "Customizations", customizations_path,
-              class: nav_class(request.path.start_with?("/customizations")) %>
-
-        <% if current_user %>
-          <div class="mt-auto border-t border-slate-200 pt-3">
-            <div class="truncate px-3 text-xs text-slate-500" title="<%= current_user.email %>">
-              <%= current_user.name %> · <%= current_user.provider %>
-            </div>
-            <%= button_to "Sign out", signout_path, method: :delete,
-                  class: "mt-1 w-full rounded-md px-3 py-1.5 text-left text-sm font-medium text-slate-500 hover:bg-slate-100" %>
-          </div>
+        <%= link_to notes_path, title: "Notes",
+              class: nav_class(request.path.start_with?("/notes")) do %>
+          <%= nav_icon(:notes) %><span class="nav-label">Notes</span>
         <% end %>
+        <%= link_to books_path, title: "Textbook",
+              class: nav_class(request.path.start_with?("/books") || request.path.start_with?("/pdf/books")) do %>
+          <%= nav_icon(:book) %><span class="nav-label">Textbook</span>
+        <% end %>
+        <%= link_to questions_path, title: "Questions",
+              class: nav_class(request.path.start_with?("/questions")) do %>
+          <%= nav_icon(:questions) %><span class="nav-label">Questions</span>
+        <% end %>
+        <%= link_to mistakes_path, title: "Mistake book",
+              class: nav_class(request.path.start_with?("/mistakes")) do %>
+          <%= nav_icon(:mistakes) %><span class="nav-label">Mistakes</span>
+        <% end %>
+        <%= link_to themes_path, title: "Themes",
+              class: nav_class(request.path.start_with?("/themes")) do %>
+          <%= nav_icon(:themes) %><span class="nav-label">Themes</span>
+        <% end %>
+
+        <div class="mt-auto pt-3">
+          <%= button_to signout_path, method: :delete, title: "Sign out",
+                class: "nav-link flex w-full items-center gap-3 rounded-md px-3 py-2 text-sm font-medium text-slate-500 hover:bg-slate-100" do %>
+            <%= nav_icon(:signout) %><span class="nav-label">Sign out</span>
+          <% end %>
+        </div>
+
+        <button type="button" class="nav-toggle" data-action="nav#toggle"
+                aria-label="Collapse navigation" title="Collapse navigation">
+          <%= nav_icon(:chevron) %>
+        </button>
       </aside>
 
       <main class="min-w-0 flex-1 px-8 py-8">
         <div class="mx-auto w-full max-w-4xl min-w-0">
+          <% if flash[:alert].present? || flash[:notice].present? %>
+            <div class="mb-6 rounded-lg border px-4 py-3 text-sm <%= flash[:alert].present? ? "border-amber-300 bg-amber-50 text-amber-800" : "border-indigo-200 bg-indigo-50 text-indigo-800" %>">
+              <%= flash[:alert] || flash[:notice] %>
+            </div>
+          <% end %>
           <%= yield %>
         </div>
       </main>

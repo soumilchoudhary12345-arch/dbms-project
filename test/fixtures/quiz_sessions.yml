@@ -1,15 +1,16 @@
 # Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
 
 one:
-  status: MyString
-  time_limit_seconds: 1
-  submitted_at: 2026-09-29 21:35:05
-  correct_count: 1
-  difficulty_mix: MyText
+  status: in_progress
+  time_limit_seconds: 120
+  correct_count: 0
+  difficulty_mix: '{"medium":2}'
+  total_questions: 2
 
 two:
-  status: MyString
-  time_limit_seconds: 1
+  status: submitted
+  time_limit_seconds: 120
   submitted_at: 2026-09-29 21:35:05
   correct_count: 1
-  difficulty_mix: MyText
+  difficulty_mix: '{"medium":2}'
+  total_questions: 2

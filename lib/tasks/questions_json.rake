@@ -2,7 +2,7 @@ require "json"
 
 namespace :questions do
   desc "Import questions from a JSON file (body/options/answer/difficulty/topic/solution)"
-  task :import_json, [:path] => :environment do |_t, args|
+  task :import_json, [ :path ] => :environment do |_t, args|
     path = args[:path] || Rails.root.join("data/questions.json")
     abort("File not found: #{path}") unless File.exist?(path)
 
@@ -21,9 +21,9 @@ namespace :questions do
       record = Question.find_or_initialize_by(subject: "Mathematics", source: "question-bank", body: row["body"])
       record.q_type     = "mcq"
       record.marks      = 1
-      record.difficulty = %w[easy medium hard super_hard].include?(row["difficulty"]) ? row["difficulty"] : "medium"
+      record.difficulty = %w[easy medium hard].include?(row["difficulty"]) ? row["difficulty"] : "medium"
       record.topic      = row["topic"]
-      record.options    = JSON.generate(row["options"].slice("A", "B", "C", "D"))
+      record.options    = row["options"].slice("A", "B", "C", "D")
       record.answer     = row["answer"]
       record.solution   = row["solution"]
       record.save!

@@ -10,6 +10,45 @@ module QuestionImport
     "D" => "(A) is false but (R) is true."
   }.freeze
 
+  # pdftotext emits Private Use Area codepoints for glyphs whose fonts have no
+  # ToUnicode map (Symbol/MT-Extra math glyphs). Each codepoint below was
+  # decoded by reading every context it appears in; unknown codepoints drop.
+  PUA_MAP = {
+    0xF022 => "∀", 0xF024 => "\u0302", 0xF028 => "(", 0xF029 => ")",
+    0xF02B => "+", 0xF02D => "-", 0xF03C => "<", 0xF03D => "=", 0xF03E => ">",
+    0xF051 => ",", 0xF05B => "[", 0xF05C => "∴", 0xF05D => "]",
+    0xF06C => "λ", 0xF06D => "μ", 0xF070 => ".", 0xF072 => "", 0xF075 => "",
+    0xF07B => "{", 0xF07D => "}",
+    0xF0A1 => "ℝ", 0xF0A3 => "≤", 0xF0A5 => "∞", 0xF0AE => "→",
+    0xF0B1 => "±", 0xF0B3 => "≥", 0xF0B4 => "×",
+    0xF0C7 => "∩", 0xF0C8 => "∪", 0xF0CE => "∈", 0xF0DE => "⇒",
+    0xF0E6 => "(", 0xF0E7 => "(", 0xF0E8 => "(", 0xF0E9 => "[",
+    0xF0EA => "[", 0xF0EB => "[", 0xF0EC => "{", 0xF0ED => "{",
+    0xF0EE => "≠", 0xF0EF => "",
+    0xF0F2 => "∫", 0xF0F6 => "(", 0xF0F7 => "(", 0xF0F8 => ")",
+    0xF0F9 => "]", 0xF0FA => "]", 0xF0FB => "]"
+  }.freeze
+
+  def decode_glyphs(text)
+    s = text.to_s.gsub(/[-]/) { |c| PUA_MAP[c.ord] || "" }
+    s = s.gsub(/\[\[+/, "[").gsub(/\]\]+/, "]").gsub(/\{\{+/, "{")
+    s = s.gsub(/(\u0302+)(\S)/, "\\2\\1") # hat drawn before its letter -> after
+    s.gsub(/\s*---\s*/, " ").unicode_normalize(:nfkc)
+  end
+
+  def sanitize(text)
+    decode_glyphs(text).gsub(/\bpage \d+ of \d+\b/, "")
+                       .gsub(/\s+/, " ").strip
+                       .sub(/\A[.:–-]+\s*/, "")
+  end
+
+  def sanitize_body(text)
+    decode_glyphs(text).gsub(/\bpage \d+ of \d+\b/, "")
+                       .split("\n").map { |l| l.gsub(/\s+/, " ").strip }
+                       .reject(&:empty?).join("\n")
+                       .sub(/\A[.:–-]+\s*/, "")
+  end
+
   def run(repo_path)
     repo = Pathname.new(repo_path || "/tmp/cbse_repo")
     sqp_root = repo.join("corpus/markdown_sqp_archive/SQP")
@@ -38,17 +77,19 @@ module QuestionImport
           next
         end
 
-        record = Question.find_or_initialize_by(
-          subject: "Mathematics",
-          source: source_label(session),
-          body: q[:body]
-        )
-        record.q_type     = q_no >= 19 ? "assertion_reason" : "mcq"
+        label = source_label(session)
+        key = sanitize(q[:body])
+        record = Question.where(subject: "Mathematics", source: label)
+                         .find { |r| sanitize(r.body) == key }
+        record ||= Question.new(subject: "Mathematics", source: label)
+        body = sanitize_body(q[:body])
+        record.body = body if record.body != body
+        record.q_type     = "mcq"
         record.marks      = 1
         record.difficulty = q_no >= 19 ? "hard" : "medium"
-        record.options    = JSON.generate(q[:options])
+        record.options    = q[:options]
         record.answer     = answer[:letter]
-        record.solution   = answer[:solution].presence
+        record.solution   = sanitize(answer[:solution]).presence
         record.save!
         imported += 1
       end
@@ -56,7 +97,7 @@ module QuestionImport
 
     puts "Imported rows: #{imported} (skipped incomplete: #{skipped})"
     puts "Questions in DB: #{Question.count}"
-    puts "With answers: #{Question.where.not(answer: [nil, ""]).count}"
+    puts "With answers: #{Question.where.not(answer: [ nil, "" ]).count}"
   end
 
   def source_label(session)
@@ -99,15 +140,15 @@ module QuestionImport
       next if q_no > 20
 
       markers = part.to_enum(:scan, /\(([A-Da-d])\)/)
-                    .map { [Regexp.last_match.begin(0), Regexp.last_match[1].upcase] }
+                    .map { [ Regexp.last_match.begin(0), Regexp.last_match[1].upcase ] }
       markers = dedupe_letters(markers)
       if markers.size < 4
-        questions[q_no] = { body: clean_text(cut_section(part.sub(/\AQ\.?\d+\./, ""))), options: nil }
+        questions[q_no] = { body: sanitize_body(cut_section(part.sub(/\AQ\.?\d+\./, ""))), options: nil }
         next
       end
 
       stem = cut_section(part[0...markers.first[0]].sub(/\AQ\.?\d+\./, ""))
-      questions[q_no] = { body: clean_text(stem), options: extract_options(part, markers) }
+      questions[q_no] = { body: sanitize_body(stem), options: extract_options(part, markers) }
     end
     questions
   end
@@ -137,6 +178,6 @@ module QuestionImport
   end
 
   def clean_text(text)
-    text.to_s.gsub(/\s+/, " ").strip.sub(/\A[.:–-]+\s*/, "")
+    sanitize(text.to_s)
   end
 end

@@ -1,9 +1,11 @@
-# This file should ensure the existence of records required to run the application in every environment (production,
-# development, test). The code here should be idempotent so that it can be executed at any point in every environment.
-# The data can then be loaded with the bin/rails db:seed command (or created alongside the database with db:setup).
-#
-# Example:
-#
-#   ["Action", "Comedy", "Drama", "Horror"].each do |genre_name|
-#     MovieGenre.find_or_create_by!(name: genre_name)
-#   end
+# Question bank shipped with the repo. Loaded automatically by bin/rails
+# db:prepare on a fresh database (containers, deploys, new clones).
+path = Rails.root.join("db/data/questions.json")
+
+if Question.count.zero? && path.exist?
+  rows = JSON.parse(File.read(path))
+  Question.insert_all(rows)
+  puts "Seeded #{Question.count} questions"
+else
+  puts "Questions already present (#{Question.count}), skipping seed"
+end

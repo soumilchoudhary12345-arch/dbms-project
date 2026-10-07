@@ -5,11 +5,43 @@
   Timed practice, picked for your level. Solutions and stats appear only after you submit.
 </p>
 
-<%= button_to "Start timed practice", quiz_sessions_path,
-      method: :post,
-      class: "rounded-lg bg-indigo-600 px-6 py-3 font-semibold text-white shadow-sm hover:bg-indigo-700" %>
+<div data-controller="confirm">
+  <%= button_to "Start timed practice", quiz_sessions_path,
+        method: :post,
+        data: { confirm_target: "start", action: "click->confirm#guard" },
+        class: "rounded-lg bg-indigo-600 px-6 py-3 font-semibold text-white shadow-sm hover:bg-indigo-700" %>
 
-<% finished = QuizSession.where(user: current_user, status: "finished").order(submitted_at: :desc).limit(10) %>
+  <dialog data-confirm-target="dialog"
+          class="w-[min(92vw,26rem)] rounded-xl border border-slate-200 bg-white p-0 shadow-sm backdrop:bg-slate-900/50">
+    <div class="p-6">
+      <h2 class="text-lg font-semibold text-slate-900">Are you sure you want to begin the quiz session?</h2>
+      <p class="mt-3 text-sm font-medium text-slate-800">
+        <%= @preview[:questions] %> questions · <%= @preview[:level_label] %> level ·
+        about <%= @preview[:minutes] %> minutes
+      </p>
+      <p class="mt-1 text-sm text-slate-500">Mix: <%= @preview[:mix] %></p>
+      <p class="mt-3 text-sm text-slate-500">
+        <% if @preview[:has_history] %>
+          Difficulty picked from your last 5 finished sessions.
+        <% else %>
+          First session — you start at medium, and it adjusts as you go.
+        <% end %>
+      </p>
+      <div class="mt-6 flex justify-end gap-3">
+        <button type="button" data-action="confirm#cancel"
+              class="cursor-pointer rounded-lg px-4 py-2 text-sm font-medium text-slate-600 hover:bg-slate-100">
+          Not yet
+        </button>
+        <button type="button" data-action="confirm#accept"
+              class="cursor-pointer rounded-lg bg-indigo-600 px-4 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-700">
+          Begin session
+        </button>
+      </div>
+    </div>
+  </dialog>
+</div>
+
+<% finished = QuizSession.submitted.where(user: current_user).order(submitted_at: :desc).limit(10) %>
 <% if finished.any? %>
   <h2 class="mb-3 mt-10 text-lg font-semibold">Your sessions</h2>
   <div class="overflow-hidden rounded-lg border border-slate-200 bg-white">
@@ -26,8 +58,8 @@
         <% finished.each do |s| %>
           <tr class="border-t border-slate-100">
             <td class="px-4 py-2"><%= s.submitted_at&.strftime("%b %d, %H:%M") %></td>
-            <td class="px-4 py-2 font-medium"><%= s.correct_count %>/10</td>
-            <td class="px-4 py-2 text-slate-500"><%= s.difficulty_mix %></td>
+            <td class="px-4 py-2 font-medium"><%= s.correct_count %>/<%= s.total_questions %></td>
+            <td class="px-4 py-2 text-slate-500"><%= s.mix_label %></td>
             <td class="px-4 py-2 text-right">
               <%= link_to "Review", result_session_path(s), class: "text-indigo-600 hover:underline" %>
             </td>

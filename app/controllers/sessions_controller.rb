@@ -6,26 +6,24 @@ class SessionsController < ApplicationController
     redirect_to session_path(session)
   end
 
+  # Mistake book: practice a single missed question again.
+  def retry_question
+    session = QuizSession.build_retry(Question.find(params[:question_id]), user: current_user)
+    redirect_to session_path(session)
+  end
+
   def show
     redirect_to result_session_path(@session) if @session.finished?
   end
 
   def submit
-    if @session.active?
-      @session.question_attempts.includes(:question).each do |attempt|
-        attempt.grade!(params.dig(:answers, attempt.question_id.to_s))
-      end
-      @session.update!(status: "finished", submitted_at: Time.current,
-                       correct_count: @session.question_attempts.where(correct: true).count)
-    end
+    @session.submit!(params[:answers]) if @session.active?
     redirect_to result_session_path(@session)
   end
 
   def result
     redirect_to questions_path unless @session.finished?
     @attempts = @session.question_attempts.includes(:question)
-    @accuracy_history = QuizSession.where(status: "finished")
-                                   .order(:submitted_at).pluck(:correct_count, :time_limit_seconds)
   end
 
   private
@@ -35,15 +33,6 @@ class SessionsController < ApplicationController
   end
 
   def current_level
-    recent = QuizSession.where(user: current_user, status: "finished")
-                        .order(submitted_at: :desc).limit(5)
-    answered = QuestionAttempt.where(quiz_session: recent).count
-    return "medium" if answered.zero?
-
-    accuracy = recent.sum(:correct_count).to_f / answered
-    return "easy" if accuracy < 0.5
-    return "hard" if accuracy >= 0.8
-
-    "medium"
+    QuizSession.level_for(current_user)
   end
 end

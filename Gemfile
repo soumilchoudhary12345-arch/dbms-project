@@ -14,6 +14,13 @@ gem "importmap-rails"
 gem "turbo-rails"
 # Hotwire's modest JavaScript framework [https://stimulus.hotwired.dev]
 gem "stimulus-rails"
+# Real sign-in: OmniAuth strategies register only when env credentials exist
+gem "omniauth", "~> 2.1"
+gem "omniauth-rails_csrf_protection", "~> 2.0"
+gem "omniauth-google-oauth2", "~> 1.2"
+gem "omniauth-microsoft_graph", "~> 2.2"
+gem "omniauth-facebook", "~> 11.0"
+
 # Use Tailwind CSS [https://github.com/rails/tailwindcss-rails]
 gem "tailwindcss-rails"
 # Build JSON APIs with ease [https://github.com/rails/jbuilder]
@@ -43,6 +50,9 @@ gem "thruster", require: false
 gem "image_processing", "~> 1.2"
 
 group :development, :test do
+  # Local env files for OAuth credentials (never committed)
+  gem "dotenv-rails", groups: %i[development test]
+
   # See https://guides.rubyonrails.org/debugging_rails_applications.html#debugging-with-the-debug-gem
   gem "debug", platforms: %i[ mri windows ], require: "debug/prelude"
 

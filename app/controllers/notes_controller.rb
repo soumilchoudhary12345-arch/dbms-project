@@ -6,6 +6,7 @@ class NotesController < ApplicationController
   def show
     @subject = ContentLibrary.find_subject(params[:subject], root: StudyContent.notes_root)
     render_not_found unless @subject
+    @chapter_count = ContentLibrary.max_chapter_number
   end
 
   private

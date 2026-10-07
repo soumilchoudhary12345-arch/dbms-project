@@ -14,7 +14,7 @@
             class: "group flex h-24 items-center justify-between rounded-xl bg-indigo-600 px-6 text-white shadow-sm transition hover:bg-indigo-700" do %>
         <span class="text-2xl font-semibold"><%= subject.name %></span>
         <span class="text-sm opacity-80 group-hover:opacity-100">
-          <%= subject.chapters.size %> chapters &rarr;
+          <%= subject.chapters.size %> chapters
         </span>
       <% end %>
     <% end %>
@@ -37,7 +37,7 @@
         <p class="mb-3 flex-1 text-sm text-slate-500"><%= book["why"] %></p>
         <%= link_to "Buy", book["buy"],
               target: "_blank", rel: "noopener",
-              class: "inline-flex justify-center rounded-md bg-indigo-600 px-4 py-2 text-sm font-medium text-white hover:bg-indigo-700" %>
+              class: "inline-flex justify-center rounded-md border border-slate-300 px-4 py-2 text-sm font-medium text-indigo-600 hover:border-indigo-300 hover:bg-indigo-50" %>
       </div>
     <% end %>
   </div>

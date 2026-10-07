@@ -1,6 +1,6 @@
 <% content_for(:title, @subject.name) %>
 
-<%= link_to "&larr; All books".html_safe, root_path, class: "text-sm font-medium text-indigo-600 hover:underline" %>
+<%= link_to "&larr; All books".html_safe, books_path, class: "text-sm font-medium text-indigo-600 hover:underline" %>
 
 <h1 class="mb-2 mt-3 text-2xl font-bold"><%= @subject.name %></h1>
 <p class="mb-6 text-sm text-slate-500">Click a chapter to open it in a new tab.</p>
@@ -10,8 +10,12 @@
     <div class="flex h-12 items-stretch overflow-hidden rounded-lg border border-slate-200 bg-white shadow-sm">
       <%= link_to chapter_pdf_path(kind: "books", subject: @subject.slug, number: chapter.number, part: chapter.part),
             target: "_blank", rel: "noopener",
-            class: "flex flex-1 items-center px-4 font-medium text-slate-800 hover:bg-slate-50" do %>
-        <%= chapter.label %>
+            class: "flex min-w-0 flex-1 items-center gap-3 px-4 font-medium text-slate-800 hover:bg-slate-50" do %>
+        <span class="w-5 shrink-0 font-mono text-sm text-indigo-600"><%= chapter.number %></span>
+        <span class="truncate"><%= chapter.title %></span>
+        <% if chapter.part > 1 %>
+          <span class="shrink-0 text-xs font-normal text-slate-400">Part <%= chapter.part %></span>
+        <% end %>
       <% end %>
       <%= link_to "Download",
             chapter_pdf_path(kind: "books", subject: @subject.slug, number: chapter.number, part: chapter.part, download: 1),

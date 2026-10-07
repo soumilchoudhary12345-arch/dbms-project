@@ -28,6 +28,9 @@
 !/tmp/storage/
 !/tmp/storage/.keep
 
+# Local database backups taken before migrations.
+/db/backups/
+
 /public/assets
 
 # Ignore key files for decrypting credentials and more.

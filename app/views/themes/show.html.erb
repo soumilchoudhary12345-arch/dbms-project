@@ -1,0 +1,44 @@
+<% content_for(:title, "Themes") %>
+
+<div data-controller="theme">
+  <div class="mb-6 flex items-start justify-between gap-4">
+    <div>
+      <h1 class="mb-2 text-2xl font-bold">Themes</h1>
+      <p class="text-sm text-slate-500">Each mode brings its own paper, ink and accent. Saved on this device.</p>
+    </div>
+    <div class="flex shrink-0 items-center gap-2 pt-1">
+      <span class="text-sm font-medium text-slate-600">Sync</span>
+      <button type="button"
+              role="switch"
+              aria-checked="true"
+              aria-label="Sync theme to computer"
+              data-action="theme#toggleSync"
+              data-theme-target="switch"
+              class="relative h-6 w-11 rounded-full bg-slate-200">
+        <span data-theme-target="knob" class="sync-knob absolute left-0.5 top-0.5 h-5 w-5 rounded-full"></span>
+      </button>
+      <span class="whitespace-nowrap text-xs text-slate-400">Follows your computer</span>
+    </div>
+  </div>
+
+  <div class="flex flex-col gap-2">
+    <% theme_presets.each do |preset, name, description, chips| %>
+      <button type="button"
+              data-action="theme#select"
+              data-preset="<%= preset %>"
+              data-theme-target="option"
+              class="flex items-center justify-between gap-4 rounded-xl border border-slate-200 bg-white px-5 py-4 text-left shadow-sm hover:border-indigo-300">
+        <span class="min-w-0">
+          <span class="block font-semibold text-slate-800"><%= name %></span>
+          <span class="block text-sm text-slate-500"><%= description %></span>
+        </span>
+        <span class="flex shrink-0 items-center gap-3">
+          <% chips.each do |color| %>
+            <span class="h-7 w-7 rounded-md border border-slate-200" style="background: <%= color %>"></span>
+          <% end %>
+          <span data-check class="hidden w-4 text-indigo-600">&#10003;</span>
+        </span>
+      </button>
+    <% end %>
+  </div>
+</div>

@@ -1,23 +1,25 @@
 # Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
 
 one:
-  subject: MyString
-  q_type: MyString
+  subject: Mathematics
+  q_type: mcq
   marks: 1
-  difficulty: MyString
-  source: MyString
-  body: MyText
-  options: MyText
-  answer: MyText
-  solution: MyText
+  difficulty: medium
+  source: fixture
+  body: What is 1 + 1?
+  options: '{"A":"1","B":"2","C":"3","D":"4"}'
+  answer: B
+  solution: 1 + 1 = 2.
+  topic: algebra
 
 two:
-  subject: MyString
-  q_type: MyString
+  subject: Mathematics
+  q_type: mcq
   marks: 1
-  difficulty: MyString
-  source: MyString
-  body: MyText
-  options: MyText
-  answer: MyText
-  solution: MyText
+  difficulty: medium
+  source: fixture
+  body: What is 2 x 2?
+  options: '{"A":"4","B":"5","C":"6","D":"8"}'
+  answer: A
+  solution: 2 x 2 = 4.
+  topic: algebra
