@@ -1,0 +1,16 @@
+services:
+  - type: web
+    name: study
+    runtime: docker
+    plan: free
+    region: singapore
+    dockerfilePath: ./Dockerfile
+    healthCheckPath: /up
+    dockerCommand: bash -c "./bin/rails db:prepare && ./bin/rails server -b 0.0.0.0 -p ${PORT:-3000}"
+    envVars:
+      - key: RAILS_MASTER_KEY
+        sync: false
+      - key: RAILS_LOG_LEVEL
+        value: info
+      - key: WEB_CONCURRENCY
+        value: "1"
