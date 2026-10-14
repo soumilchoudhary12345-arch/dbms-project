@@ -1,0 +1,31 @@
+<%# Checklist card — rendered by home#index and swapped in place via Turbo streams. %>
+<section id="checklist" aria-label="Checklist">
+  <div>
+    <div class="mb-3 flex items-baseline justify-between">
+      <h2 class="text-lg font-semibold">Checklist</h2>
+      <% if @todos.any? %>
+        <span id="todo-progress" class="text-sm text-slate-500"><%= @done_count %>/<%= @todos.size %> done</span>
+      <% end %>
+    </div>
+
+    <%= form_with model: Todo.new, class: "mb-3 flex gap-2" do |f| %>
+      <%= f.text_field :title,
+            placeholder: "Add a task, e.g. Revise chapter 7",
+            required: true, maxlength: 120,
+            class: "min-w-0 flex-1 rounded-md border border-slate-200 bg-white px-3 py-2 text-sm" %>
+      <%= f.submit "Add",
+            class: "cursor-pointer rounded-md bg-indigo-600 px-4 py-2 text-sm font-medium text-white hover:bg-indigo-700" %>
+    <% end %>
+
+    <% if @todos.empty? %>
+      <p class="rounded-lg border border-dashed border-slate-200 px-4 py-6 text-center text-sm text-slate-500">
+        Nothing on the list yet. Add what you'll finish today.
+      </p>
+    <% else %>
+      <div class="overflow-hidden rounded-lg border border-slate-200 bg-white">
+        <%= render partial: "todos/todo", collection: @todos %>
+      </div>
+    <% end %>
+  </div>
+</section>
+

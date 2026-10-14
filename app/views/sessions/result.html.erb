@@ -1,21 +1,28 @@
 <% content_for(:title, "Result") %>
 
-<% accuracy = @attempts.any? ? @attempts.count(&:correct).to_f / @attempts.size : 0 %>
+<% wrong = @attempts.select { |a| !a.correct && a.answer.present? } %>
+<% blank = @attempts.select(&:skipped?) %>
+<% right = @attempts.select(&:correct) %>
+<% accuracy = @attempts.any? ? right.size.to_f / @attempts.size : 0 %>
 
 <h1 class="mb-1 text-2xl font-bold">Session result</h1>
 <p class="mb-6 text-sm text-slate-500">
-  Scored <span class="font-semibold text-slate-800"><%= @session.correct_count %>/<%= @attempts.size %></span>
+  Scored <span class="font-semibold text-slate-800"><%= right.size %>/<%= @attempts.size %></span>
   · accuracy <%= (accuracy * 100).round %>%
 </p>
 
-<div class="mb-8 grid grid-cols-3 gap-4">
+<div class="mb-8 grid grid-cols-2 gap-4 sm:grid-cols-4">
   <div class="rounded-lg border border-slate-200 bg-white p-4">
     <div class="text-sm text-slate-500">Correct</div>
-    <div class="text-2xl font-bold text-indigo-600"><%= @session.correct_count %></div>
+    <div class="text-2xl font-bold text-emerald-600"><%= right.size %></div>
   </div>
-  <div class="rounded-lg border border-slate-200 bg-white p-4">
-    <div class="text-sm text-slate-500">Wrong / skipped</div>
-    <div class="text-2xl font-bold"><%= @attempts.size - @session.correct_count %></div>
+  <div class="rounded-lg border border-rose-200 bg-white p-4">
+    <div class="text-sm text-slate-500">Wrong</div>
+    <div class="text-2xl font-bold text-rose-600"><%= wrong.size %></div>
+  </div>
+  <div class="rounded-lg border border-amber-200 bg-white p-4">
+    <div class="text-sm text-slate-500">Left blank</div>
+    <div class="text-2xl font-bold text-amber-600"><%= blank.size %></div>
   </div>
   <div class="rounded-lg border border-slate-200 bg-white p-4">
     <div class="text-sm text-slate-500">Question mix</div>
@@ -23,38 +30,50 @@
   </div>
 </div>
 
-<h2 class="mb-3 text-lg font-semibold">Review & solutions</h2>
-<div class="flex flex-col gap-4">
-  <% @attempts.each_with_index do |attempt, i| %>
-    <% q = attempt.question %>
-    <div class="rounded-lg border <%= attempt.correct ? 'border-emerald-300' : 'border-rose-300' %> bg-white p-5">
-      <div class="mb-2 flex items-center justify-between">
-        <span class="text-sm font-semibold <%= attempt.correct ? 'text-emerald-600' : 'text-rose-600' %>">
-          Q<%= i + 1 %> · <%= attempt.correct ? "Correct" : (attempt.answer.blank? ? "Skipped" : "Wrong") %>
-        </span>
-        <span class="text-xs text-slate-400"><% if q.topic.present? %><%= topic_name(q.topic) %> · <% end %><%= q.source %></span>
-      </div>
-      <p class="mb-3 min-w-0 break-words whitespace-pre-line text-slate-800"><%= q.body %></p>
+<% if wrong.empty? && blank.empty? && right.any? %>
+  <div class="mb-8 rounded-lg border border-emerald-300 bg-emerald-50 p-5 text-sm font-medium text-emerald-800">
+    Perfect run — every question correct.
+  </div>
+<% end %>
 
-      <div class="mb-3 flex flex-col gap-1 text-sm">
-        <% q.options_hash.sort.each do |letter, text| %>
-          <div class="min-w-0 break-words <%= letter == q.answer ? 'font-semibold text-emerald-700' : (letter == attempt.answer ? 'text-rose-600' : 'text-slate-600') %>">
-            <%= letter %>. <%= text %>
-            <% if letter == q.answer %> <span class="text-xs">(correct answer)</span><% end %>
-            <% if letter == attempt.answer && !attempt.correct %> <span class="text-xs">(your answer)</span><% end %>
-          </div>
-        <% end %>
-      </div>
-
-      <% if q.solution.present? %>
-        <div class="rounded-md bg-slate-50 p-3 text-sm text-slate-700">
-          <span class="font-semibold">Solution:</span> <%= q.solution %>
-        </div>
-      <% end %>
+<% if wrong.any? %>
+  <section class="mb-6 rounded-lg border border-rose-200 border-l-4 border-l-rose-500 p-5"
+           aria-labelledby="wrong-heading">
+    <h2 id="wrong-heading" class="mb-4 text-lg font-semibold text-rose-700">
+      Wrong answers <span class="text-sm font-normal text-slate-500">(<%= wrong.size %>)</span>
+    </h2>
+    <div class="flex flex-col gap-4">
+      <%= render partial: "sessions/review_card", collection: wrong, as: :attempt,
+                 locals: { tone: :wrong } %>
     </div>
-  <% end %>
-</div>
+  </section>
+<% end %>
+
+<% if blank.any? %>
+  <section class="mb-6 rounded-lg border border-amber-200 border-l-4 border-l-amber-500 p-5"
+           aria-labelledby="blank-heading">
+    <h2 id="blank-heading" class="mb-4 text-lg font-semibold text-amber-700">
+      Left blank <span class="text-sm font-normal text-slate-500">(<%= blank.size %>)</span>
+    </h2>
+    <div class="flex flex-col gap-4">
+      <%= render partial: "sessions/review_card", collection: blank, as: :attempt,
+                 locals: { tone: :blank } %>
+    </div>
+  </section>
+<% end %>
+
+<% if right.any? %>
+  <details class="mb-6 rounded-lg border border-emerald-200 bg-white p-5">
+    <summary class="cursor-pointer text-lg font-semibold text-emerald-700">
+      Correct answers <span class="text-sm font-normal text-slate-500">(<%= right.size %>)</span>
+    </summary>
+    <div class="mt-4 flex flex-col gap-4">
+      <%= render partial: "sessions/review_card", collection: right, as: :attempt,
+                 locals: { tone: :correct } %>
+    </div>
+  </details>
+<% end %>
 
 <%= button_to "Start another practice", quiz_sessions_path,
       method: :post,
-      class: "mt-8 rounded-lg bg-indigo-600 px-6 py-3 font-semibold text-white hover:bg-indigo-700" %>
+      class: "mt-4 rounded-lg bg-indigo-600 px-6 py-3 font-semibold text-white hover:bg-indigo-700" %>

@@ -1,0 +1,32 @@
+<%# locals: (attempt:, tone:) %>
+<%# tone is :wrong, :blank or :correct — decides border and label. %>
+<% q = attempt.question %>
+<% border, label, label_class =
+     case tone
+     when :wrong  then ["border-rose-300", "Wrong", "text-rose-600"]
+     when :blank  then ["border-amber-300", "Left blank", "text-amber-600"]
+     else              ["border-emerald-300", "Correct", "text-emerald-600"]
+     end %>
+<div class="rounded-lg border <%= border %> bg-white p-5">
+  <div class="mb-2 flex items-center justify-between">
+    <span class="text-sm font-semibold <%= label_class %>"><%= label %></span>
+    <span class="text-xs text-slate-400"><% if q.topic.present? %><%= topic_name(q.topic) %> · <% end %><%= q.source %></span>
+  </div>
+  <p class="mb-3 min-w-0 break-words whitespace-pre-line text-slate-800"><%= q.body %></p>
+
+  <div class="mb-3 flex flex-col gap-1 text-sm">
+    <% q.options_hash.sort.each do |letter, text| %>
+      <div class="min-w-0 break-words <%= letter == q.answer ? 'font-semibold text-emerald-700' : (letter == attempt.answer ? 'text-rose-600' : 'text-slate-600') %>">
+        <%= letter %>. <%= text %>
+        <% if letter == q.answer %> <span class="text-xs">(correct answer)</span><% end %>
+        <% if letter == attempt.answer && !attempt.correct %> <span class="text-xs">(your answer)</span><% end %>
+      </div>
+    <% end %>
+  </div>
+
+  <% if q.solution.present? %>
+    <div class="rounded-md bg-slate-50 p-3 text-sm text-slate-700">
+      <span class="font-semibold">Solution:</span> <%= q.solution %>
+    </div>
+  <% end %>
+</div>

@@ -1,16 +1,18 @@
 <% content_for(:title, "Practice") %>
+<% content_for(:head) { tag.meta name: "turbo-cache-control", content: "no-cache" } %>
 
+<div data-controller="lock">
 <div data-controller="timer"
      data-timer-seconds-value="<%= @session.time_remaining %>"
      class="mb-6 flex items-center justify-between rounded-lg border border-slate-200 bg-white px-5 py-3">
-  <span class="text-sm font-medium text-slate-600">Answer everything. Click a selected option again to clear it. No solutions until you submit.</span>
+  <span class="text-sm font-medium text-slate-600">You're locked in until you submit. Answer everything. Click a selected option again to clear it. No solutions until you submit.</span>
   <span data-timer-target="clock"
         class="font-mono text-2xl font-bold tabular-nums text-indigo-600">--:--</span>
 </div>
 
 <%= form_with url: submit_session_path(@session),
               method: :post,
-              data: { timer_target: "form" } do %>
+              data: { timer_target: "form", action: "turbo:submit-start->lock#markSubmit" } do %>
   <div class="flex flex-col gap-4">
     <% @session.question_attempts.includes(:question).each_with_index do |attempt, i| %>
       <% q = attempt.question %>
@@ -37,3 +39,4 @@
           data: { timer_target: "submit" } %>
   </div>
 <% end %>
+</div>

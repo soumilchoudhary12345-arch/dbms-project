@@ -1,0 +1,20 @@
+<div id="<%= dom_id(todo) %>" class="flex items-center gap-3 border-b border-slate-100 px-4 py-2.5 last:border-b-0">
+  <%= form_with model: todo, class: "flex min-w-0 flex-1 items-center gap-3" do |f| %>
+    <%= f.check_box :done,
+          class: "h-4 w-4 shrink-0 cursor-pointer accent-indigo-600",
+          onchange: "this.form.requestSubmit()" %>
+    <%= f.label :done,
+          class: class_names("min-w-0 flex-1 cursor-pointer text-sm break-words",
+                             "text-slate-400 line-through": todo.done?,
+                             "text-slate-800": !todo.done?) do %>
+      <%= todo.title %>
+    <% end %>
+  <% end %>
+  <%= button_to todo_path(todo), method: :delete,
+        form: { class: "shrink-0" },
+        class: "cursor-pointer rounded-md px-2 py-1 text-sm text-slate-400 hover:bg-slate-100 hover:text-slate-600",
+        title: "Delete",
+        aria: { label: "Delete #{todo.title}" } do %>
+    &times;
+  <% end %>
+</div>

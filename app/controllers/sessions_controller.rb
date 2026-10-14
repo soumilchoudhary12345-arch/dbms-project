@@ -13,6 +13,12 @@ class SessionsController < ApplicationController
   end
 
   def show
+    # Time ran out while the tab was away (or JS never fired): close the
+    # session server-side instead of stranding it in_progress forever.
+    if @session.expired?
+      @session.submit!
+      redirect_to result_session_path(@session) and return
+    end
     redirect_to result_session_path(@session) if @session.finished?
   end
 

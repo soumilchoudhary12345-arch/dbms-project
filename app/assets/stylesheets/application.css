@@ -433,9 +433,28 @@ html[data-theme] .hover\:bg-slate-100:hover { background-color: var(--surface-2)
 html[data-theme] .bg-indigo-50,
 html[data-theme] .hover\:bg-indigo-50:hover { background-color: var(--accent-soft); }
 
-html[data-theme] .bg-indigo-600 { background-color: var(--accent); }
+html[data-theme] .bg-indigo-600 {
+  background-color: var(--accent);
+  color: var(--on-accent);
+  box-shadow: 0 1px 2px rgb(0 0 0 / 0.1), inset 0 1px 0.5px rgb(255 255 255 / 0.2);
+  transition: all 0.18s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+html[data-theme] .bg-indigo-600:hover {
+  background-color: var(--accent-strong);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px color-mix(in srgb, var(--accent) 35%, transparent), inset 0 1px 0.5px rgb(255 255 255 / 0.25);
+}
+
+html[data-theme] .bg-indigo-600:active {
+  transform: translateY(0);
+  box-shadow: 0 1px 2px rgb(0 0 0 / 0.15);
+}
+
 html[data-theme] .bg-indigo-700,
-html[data-theme] .hover\:bg-indigo-700:hover { background-color: var(--accent-strong); }
+html[data-theme] .hover\:bg-indigo-700:hover {
+  background-color: var(--accent-strong);
+}
 
 html[data-theme] .text-indigo-600 { color: var(--accent-text); }
 html[data-theme] .text-indigo-700,
@@ -450,6 +469,19 @@ html[data-theme] .hover\:border-indigo-300:hover {
 
 html[data-theme] .ring-indigo-500 { --tw-ring-color: var(--accent); }
 html[data-theme] .accent-indigo-600 { accent-color: var(--accent); }
+
+/* Artistic Theme Collection Card & Swatch Enhancements */
+html[data-theme] .theme-collection-card {
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+  background-color: var(--surface);
+  border-color: var(--line);
+}
+
+html[data-theme] .theme-collection-card:hover {
+  border-color: color-mix(in srgb, var(--accent) 40%, var(--line));
+  transform: translateY(-2px);
+  box-shadow: 0 8px 24px color-mix(in srgb, var(--accent) 10%, rgb(0 0 0 / 0.08));
+}
 
 /* ---------- semantic feedback ---------- */
 

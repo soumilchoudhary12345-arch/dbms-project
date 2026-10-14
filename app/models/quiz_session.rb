@@ -75,7 +75,7 @@ class QuizSession < ApplicationRecord
   # Grades every attempt and stores the score in a single transaction.
   # +answers+ is a hash of question_id => chosen option (or controller params).
   def submit!(answers = {})
-    given = answers.respond_to?(:to_unsafe_h) ? answers.to_unsafe_h : answers
+    given = answers.respond_to?(:to_unsafe_h) ? answers.to_unsafe_h : (answers || {})
 
     transaction do
       question_attempts.includes(:question).each do |attempt|

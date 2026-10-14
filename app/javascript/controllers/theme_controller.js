@@ -1,7 +1,7 @@
 import { Controller } from "@hotwired/stimulus"
 
 export default class extends Controller {
-  static targets = ["option", "switch", "knob"]
+  static targets = ["option", "switch", "knob", "collection", "badge", "activeVariantLabel"]
 
   connect() {
     if (localStorage.getItem("study-theme") === "system") {
@@ -50,13 +50,53 @@ export default class extends Controller {
 
   render() {
     const active = this.resolved()
+
+    // Highlight individual color binding variant button
+    let activeVariantName = ""
+    let activeCollectionId = ""
+
     this.optionTargets.forEach((option) => {
       const on = option.dataset.preset === active
+      if (on) {
+        activeVariantName = option.dataset.name
+        activeCollectionId = option.dataset.collection
+      }
       option.classList.toggle("ring-2", on)
       option.classList.toggle("ring-indigo-500", on)
+      option.classList.toggle("bg-white", on)
+      option.classList.toggle("shadow-sm", on)
       const check = option.querySelector("[data-check]")
       if (check) check.classList.toggle("hidden", !on)
     })
+
+    // Highlight active collection card & badges
+    this.collectionTargets.forEach((card) => {
+      const variants = (card.dataset.variants || "").split(",")
+      const isCardActive = variants.includes(active)
+
+      card.classList.toggle("ring-2", isCardActive)
+      card.classList.toggle("ring-indigo-500/80", isCardActive)
+      card.classList.toggle("border-indigo-300", isCardActive)
+
+      const badge = card.querySelector("[data-theme-target='badge']")
+      if (badge) {
+        badge.classList.toggle("hidden", !isCardActive)
+        badge.classList.toggle("inline-flex", isCardActive)
+      }
+
+      const label = card.querySelector("[data-theme-target='activeVariantLabel']")
+      if (label) {
+        if (isCardActive && activeVariantName) {
+          label.textContent = activeVariantName
+          label.classList.remove("hidden")
+        } else {
+          label.textContent = ""
+          label.classList.add("hidden")
+        }
+      }
+    })
+
+    // Update Auto-Sync toggle
     if (this.hasSwitchTarget) {
       this.switchTarget.setAttribute("aria-checked", String(this.sync))
       this.switchTarget.classList.toggle("bg-indigo-600", this.sync)
