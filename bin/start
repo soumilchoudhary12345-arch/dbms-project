@@ -1,0 +1,7 @@
+#!/bin/bash -e
+
+# Production start script for PaaS hosts (Render, etc.) whose "start command"
+# replaces the Dockerfile ENTRYPOINT. Prepares the database on boot, then
+# serves the app on the host-provided $PORT bound to all interfaces.
+./bin/rails db:prepare
+exec ./bin/rails server -b 0.0.0.0 -p "${PORT:-3000}"

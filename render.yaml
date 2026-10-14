@@ -5,11 +5,13 @@ services:
     plan: free
     region: singapore
     dockerfilePath: ./Dockerfile
+    dockerContext: .
+    dockerCommand: ./bin/start
     healthCheckPath: /up
-    dockerCommand: bash -c "./bin/rails db:prepare && ./bin/rails server -b 0.0.0.0 -p ${PORT:-3000}"
+    autoDeploy: true
     envVars:
-      - key: RAILS_MASTER_KEY
-        sync: false
+      - key: SECRET_KEY_BASE
+        generateValue: true
       - key: RAILS_LOG_LEVEL
         value: info
       - key: WEB_CONCURRENCY
