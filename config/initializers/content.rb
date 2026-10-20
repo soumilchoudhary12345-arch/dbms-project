@@ -1,6 +1,6 @@
 module StudyContent
   def self.root
-    Pathname.new(ENV.fetch("STUDY_CONTENT_ROOT", "/home/soumil/Downloads/maths 12th")).expand_path
+    Pathname.new(ENV.fetch("STUDY_CONTENT_ROOT") { Rails.root.join("data", "maths 12th").to_s }).expand_path
   end
 
   def self.notes_root
