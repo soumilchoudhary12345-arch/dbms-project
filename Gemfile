@@ -15,7 +15,7 @@ gem "turbo-rails"
 # Hotwire's modest JavaScript framework [https://stimulus.hotwired.dev]
 gem "stimulus-rails"
 # Real sign-in: OmniAuth strategies register only when env credentials exist
-gem "omniauth", "~> 2.1"
+gem "omniauth", "~> 2.3"
 gem "omniauth-rails_csrf_protection", "~> 2.0"
 gem "omniauth-google-oauth2", "~> 1.2"
 gem "omniauth-microsoft_graph", "~> 2.2"
